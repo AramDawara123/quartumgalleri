@@ -124,25 +124,24 @@ const Home = () => {
           style={{ backgroundImage: `url(${galleryHero})` }}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60" />
-          <div className="absolute inset-0 floating-gradient opacity-20" />
         </div>
         
         <div className="relative z-10 text-center text-white fade-in-up max-w-5xl px-4">
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold mb-8 tracking-tight hero-text-glow">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold mb-8 tracking-tight">
             Where Art
-            <span className="block text-gallery-gold gold-shimmer bg-clip-text text-transparent">Comes Alive</span>
+            <span className="block text-gallery-gold">Comes Alive</span>
           </h1>
           <p className="text-2xl md:text-3xl lg:text-4xl mb-12 font-light max-w-3xl mx-auto leading-relaxed opacity-90">
             Discover extraordinary contemporary art and timeless masterpieces in our curated collection
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button variant="hero" size="lg" className="magnetic-hover pulse-glow" asChild>
+            <Button variant="hero" size="lg" asChild>
               <Link to="/artworks">
                 Explore Collection
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="elegant" size="lg" className="magnetic-hover glass-effect" asChild>
+            <Button variant="elegant" size="lg" asChild>
               <Link to="/events">
                 View Exhibitions
                 <Calendar className="ml-2 h-5 w-5" />
@@ -150,12 +149,6 @@ const Home = () => {
             </Button>
           </div>
         </div>
-        
-        {/* Floating Decorative Elements */}
-        <div className="absolute top-20 left-10 w-2 h-2 bg-gallery-gold rounded-full opacity-60 animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-1 h-1 bg-white rounded-full opacity-40 animate-pulse" style={{animationDelay: '1s'}}></div>
-        <div className="absolute bottom-40 left-20 w-1.5 h-1.5 bg-gallery-gold rounded-full opacity-50 animate-pulse" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-20 right-10 w-1 h-1 bg-white rounded-full opacity-30 animate-pulse" style={{animationDelay: '3s'}}></div>
       </section>
 
       {/* Featured Artworks */}
@@ -216,7 +209,7 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Button variant="default" size="lg" className="magnetic-hover pulse-glow" asChild>
+            <Button variant="default" size="lg" asChild>
               <Link to="/artworks">
                 View Full Collection
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -307,7 +300,7 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Button variant="default" size="lg" className="magnetic-hover pulse-glow" asChild>
+            <Button variant="default" size="lg" asChild>
               <Link to="/artists">
                 Meet All Artists
                 <ArrowRight className="ml-2 h-5 w-5" />
