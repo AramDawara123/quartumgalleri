@@ -7,6 +7,8 @@ import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Artworks from "./pages/Artworks";
+import Artists from "./pages/Artists";
+import ArtistProfile from "./pages/ArtistProfile";
 import Events from "./pages/Events";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -26,6 +28,8 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/artworks" element={<Artworks />} />
+              <Route path="/artists" element={<Artists />} />
+              <Route path="/artists/:id" element={<ArtistProfile />} />
               <Route path="/events" element={<Events />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
