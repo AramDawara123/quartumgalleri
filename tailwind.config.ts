@@ -39,6 +39,15 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        luxury: {
+          DEFAULT: "hsl(var(--luxury))",
+          foreground: "hsl(var(--luxury-foreground))",
+        },
+        gallery: {
+          gold: "hsl(var(--gallery-gold))",
+          cream: "hsl(var(--gallery-cream))",
+          charcoal: "hsl(var(--gallery-charcoal))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -57,6 +66,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ["Crimson Text", "Georgia", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

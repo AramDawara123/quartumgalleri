@@ -8,33 +8,41 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Gallery Design System - Sophisticated Art Gallery Palette */
+    --background: 28 15% 97%;
+    --foreground: 220 13% 18%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 30 20% 99%;
+    --card-foreground: 220 13% 18%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 30 20% 99%;
+    --popover-foreground: 220 13% 18%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 220 13% 18%;
+    --primary-foreground: 28 15% 97%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 35 25% 95%;
+    --secondary-foreground: 220 13% 18%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 35 15% 92%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 45 93% 47%;
+    --accent-foreground: 220 13% 18%;
+
+    --luxury: 38 42% 15%;
+    --luxury-foreground: 28 15% 97%;
+
+    --gallery-gold: 45 93% 47%;
+    --gallery-cream: 35 25% 95%;
+    --gallery-charcoal: 220 13% 18%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 28 15% 97%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 35 15% 88%;
+    --input: 35 15% 88%;
+    --ring: 45 93% 47%;
 
     --radius: 0.5rem;
 
@@ -56,33 +64,40 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 220 13% 12%;
+    --foreground: 28 15% 97%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 13% 15%;
+    --card-foreground: 28 15% 97%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 13% 15%;
+    --popover-foreground: 28 15% 97%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 28 15% 97%;
+    --primary-foreground: 220 13% 18%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 13% 20%;
+    --secondary-foreground: 28 15% 97%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 13% 20%;
+    --muted-foreground: 220 9% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 45 93% 47%;
+    --accent-foreground: 220 13% 18%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --luxury: 220 13% 8%;
+    --luxury-foreground: 28 15% 97%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --gallery-gold: 45 93% 47%;
+    --gallery-cream: 220 13% 20%;
+    --gallery-charcoal: 28 15% 97%;
+
+    --destructive: 0 62.8% 60%;
+    --destructive-foreground: 28 15% 97%;
+
+    --border: 220 13% 25%;
+    --input: 220 13% 25%;
+    --ring: 45 93% 47%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,6 +115,61 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-serif;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight;
+  }
+
+  .gallery-hover {
+    @apply transition-all duration-500 ease-out;
+  }
+
+  .gallery-hover:hover {
+    @apply transform scale-105 shadow-2xl;
+  }
+
+  .artwork-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300;
+  }
+
+  .artwork-overlay:hover {
+    @apply opacity-100;
+  }
+
+  .elegant-gradient {
+    background: linear-gradient(135deg, hsl(var(--gallery-cream)), hsl(var(--background)));
+  }
+
+  .luxury-gradient {
+    background: linear-gradient(135deg, hsl(var(--luxury)), hsl(var(--gallery-charcoal)));
+  }
+
+  .gold-shimmer {
+    background: linear-gradient(45deg, hsl(var(--gallery-gold)), hsl(var(--accent)));
+    background-size: 200% 200%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
