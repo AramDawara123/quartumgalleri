@@ -123,25 +123,26 @@ const Home = () => {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${galleryHero})` }}
         >
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60" />
+          <div className="absolute inset-0 floating-gradient opacity-20" />
         </div>
         
         <div className="relative z-10 text-center text-white fade-in-up max-w-5xl px-4">
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold mb-8 tracking-tight">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold mb-8 tracking-tight hero-text-glow">
             Where Art
-            <span className="block text-gallery-gold">Comes Alive</span>
+            <span className="block text-gallery-gold gold-shimmer bg-clip-text text-transparent">Comes Alive</span>
           </h1>
-          <p className="text-2xl md:text-3xl lg:text-4xl mb-12 font-light max-w-3xl mx-auto leading-relaxed">
+          <p className="text-2xl md:text-3xl lg:text-4xl mb-12 font-light max-w-3xl mx-auto leading-relaxed opacity-90">
             Discover extraordinary contemporary art and timeless masterpieces in our curated collection
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button variant="hero" size="lg" asChild>
+            <Button variant="hero" size="lg" className="magnetic-hover pulse-glow" asChild>
               <Link to="/artworks">
                 Explore Collection
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="elegant" size="lg" asChild>
+            <Button variant="elegant" size="lg" className="magnetic-hover glass-effect" asChild>
               <Link to="/events">
                 View Exhibitions
                 <Calendar className="ml-2 h-5 w-5" />
@@ -149,6 +150,12 @@ const Home = () => {
             </Button>
           </div>
         </div>
+        
+        {/* Floating Decorative Elements */}
+        <div className="absolute top-20 left-10 w-2 h-2 bg-gallery-gold rounded-full opacity-60 animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-1 h-1 bg-white rounded-full opacity-40 animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-40 left-20 w-1.5 h-1.5 bg-gallery-gold rounded-full opacity-50 animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-20 right-10 w-1 h-1 bg-white rounded-full opacity-30 animate-pulse" style={{animationDelay: '3s'}}></div>
       </section>
 
       {/* Featured Artworks */}
@@ -167,7 +174,7 @@ const Home = () => {
             {featuredArtworks.map((artwork, index) => (
               <Card
                 key={artwork.id}
-                className="group gallery-hover overflow-hidden border-0 shadow-lg"
+                className="group magnetic-hover card-glow overflow-hidden border-0 shadow-lg stagger-animation"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardContent className="p-0">
@@ -179,23 +186,25 @@ const Home = () => {
                     />
                     <div className="artwork-overlay group-hover:opacity-100 flex items-end">
                       <div className="p-6 text-white">
-                        <Button variant="hero" size="sm">
+                        <Button variant="hero" size="sm" className="glass-effect">
                           <Eye className="mr-2 h-4 w-4" />
                           View Details
                         </Button>
                       </div>
                     </div>
+                    {/* Floating accent */}
+                    <div className="absolute top-4 right-4 w-2 h-2 bg-gallery-gold rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
-                  <div className="p-6">
+                  <div className="p-6 bg-gradient-to-br from-card via-card to-muted/10">
                     <h3 className="font-serif text-xl font-semibold mb-2 text-primary">
                       {artwork.title}
                     </h3>
                     <p className="text-muted-foreground mb-3">by {artwork.artist}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold text-accent">
+                      <span className="text-2xl font-bold text-accent gold-shimmer bg-clip-text text-transparent">
                         {artwork.price}
                       </span>
-                      <Button variant="luxury" size="sm">
+                      <Button variant="luxury" size="sm" className="magnetic-hover">
                         <ShoppingBag className="mr-2 h-4 w-4" />
                         Add to Cart
                       </Button>
@@ -207,7 +216,7 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Button variant="default" size="lg" asChild>
+            <Button variant="default" size="lg" className="magnetic-hover pulse-glow" asChild>
               <Link to="/artworks">
                 View Full Collection
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -233,7 +242,7 @@ const Home = () => {
             {featuredArtists.map((artist, index) => (
               <Card
                 key={artist.id}
-                className="group gallery-hover overflow-hidden border-0 shadow-lg bg-gradient-to-br from-card via-card to-muted/20"
+                className="group magnetic-hover card-glow overflow-hidden border-0 shadow-lg bg-gradient-to-br from-card via-card to-muted/20 stagger-animation"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardContent className="p-0">
@@ -244,9 +253,11 @@ const Home = () => {
                         alt={artist.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
+                      {/* Decorative overlay pattern */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-gallery-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                     <div className="artwork-overlay group-hover:opacity-100 flex items-center justify-center">
-                      <Button variant="hero" size="sm" asChild>
+                      <Button variant="hero" size="sm" className="glass-effect" asChild>
                         <Link to={`/artists/${artist.id}`}>
                           <Eye className="mr-2 h-4 w-4" />
                           View Profile
@@ -255,12 +266,15 @@ const Home = () => {
                     </div>
                   </div>
                   
-                  <div className="p-6">
+                  <div className="p-6 relative">
+                    {/* Subtle gradient accent */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gallery-gold/30 to-transparent"></div>
+                    
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="font-serif text-xl font-semibold text-primary">
                         {artist.name}
                       </h3>
-                      <Award className="h-5 w-5 text-gallery-gold" />
+                      <Award className="h-5 w-5 text-gallery-gold pulse-glow" />
                     </div>
                     
                     <div className="flex items-center mb-3">
@@ -276,10 +290,10 @@ const Home = () => {
                     
                     <div className="flex items-center justify-between pt-4 border-t border-border/30">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-primary">{artist.artworks}</div>
+                        <div className="text-2xl font-bold text-primary gold-shimmer bg-clip-text text-transparent">{artist.artworks}</div>
                         <div className="text-xs text-muted-foreground">Artworks</div>
                       </div>
-                      <Button variant="elegant" size="sm" asChild>
+                      <Button variant="elegant" size="sm" className="magnetic-hover" asChild>
                         <Link to={`/artists/${artist.id}`}>
                           View Works
                           <ArrowRight className="ml-2 h-4 w-4" />
@@ -293,7 +307,7 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Button variant="default" size="lg" asChild>
+            <Button variant="default" size="lg" className="magnetic-hover pulse-glow" asChild>
               <Link to="/artists">
                 Meet All Artists
                 <ArrowRight className="ml-2 h-5 w-5" />
