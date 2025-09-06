@@ -118,7 +118,7 @@ const Home = () => {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen h-[110vh] flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${galleryHero})` }}
@@ -126,15 +126,15 @@ const Home = () => {
           <div className="absolute inset-0 bg-black/40" />
         </div>
         
-        <div className="relative z-10 text-center text-white fade-in-up max-w-4xl px-4">
-          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight">
+        <div className="relative z-10 text-center text-white fade-in-up max-w-5xl px-4">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold mb-8 tracking-tight">
             Where Art
             <span className="block text-gallery-gold">Comes Alive</span>
           </h1>
-          <p className="text-xl md:text-2xl mb-8 font-light max-w-2xl mx-auto leading-relaxed">
+          <p className="text-2xl md:text-3xl lg:text-4xl mb-12 font-light max-w-3xl mx-auto leading-relaxed">
             Discover extraordinary contemporary art and timeless masterpieces in our curated collection
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Button variant="hero" size="lg" asChild>
               <Link to="/artworks">
                 Explore Collection
