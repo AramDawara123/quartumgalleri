@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, Eye, ShoppingBag, Star, Quote } from "lucide-react";
+import { ArrowRight, Calendar, Eye, ShoppingBag, Star, Quote, Palette, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import galleryHero from "@/assets/gallery-hero.jpg";
@@ -82,6 +82,36 @@ const Home = () => {
       content: "From emerging artists to established masters, this gallery showcases the very best. Their exhibitions are always thought-provoking.",
       rating: 5,
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+    }
+  ];
+
+  const featuredArtists = [
+    {
+      id: 1,
+      name: "Elena Marchetti",
+      specialty: "Contemporary Abstract",
+      bio: "Master of bold colors and emotional depth",
+      artworks: 24,
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+      featured: true
+    },
+    {
+      id: 2,
+      name: "David Chen",
+      specialty: "Geometric Art",
+      bio: "Precision meets creativity in stunning compositions",
+      artworks: 18,
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+      featured: true
+    },
+    {
+      id: 3,
+      name: "Maria Rodriguez",
+      specialty: "Landscape Painting",
+      bio: "Capturing nature's essence through vivid brushstrokes",
+      artworks: 32,
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+      featured: true
     }
   ];
 
@@ -180,6 +210,92 @@ const Home = () => {
             <Button variant="default" size="lg" asChild>
               <Link to="/artworks">
                 View Full Collection
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Artists */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-primary">
+              Featured Artists
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Meet the talented creators behind our extraordinary collection
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {featuredArtists.map((artist, index) => (
+              <Card
+                key={artist.id}
+                className="group gallery-hover overflow-hidden border-0 shadow-lg bg-gradient-to-br from-card via-card to-muted/20"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <CardContent className="p-0">
+                  <div className="relative">
+                    <div className="aspect-square overflow-hidden">
+                      <img
+                        src={artist.image}
+                        alt={artist.name}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
+                    <div className="artwork-overlay group-hover:opacity-100 flex items-center justify-center">
+                      <Button variant="hero" size="sm" asChild>
+                        <Link to={`/artists/${artist.id}`}>
+                          <Eye className="mr-2 h-4 w-4" />
+                          View Profile
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-serif text-xl font-semibold text-primary">
+                        {artist.name}
+                      </h3>
+                      <Award className="h-5 w-5 text-gallery-gold" />
+                    </div>
+                    
+                    <div className="flex items-center mb-3">
+                      <Palette className="h-4 w-4 text-accent mr-2" />
+                      <span className="text-sm font-medium text-accent">
+                        {artist.specialty}
+                      </span>
+                    </div>
+                    
+                    <p className="text-muted-foreground mb-4 leading-relaxed">
+                      {artist.bio}
+                    </p>
+                    
+                    <div className="flex items-center justify-between pt-4 border-t border-border/30">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-primary">{artist.artworks}</div>
+                        <div className="text-xs text-muted-foreground">Artworks</div>
+                      </div>
+                      <Button variant="elegant" size="sm" asChild>
+                        <Link to={`/artists/${artist.id}`}>
+                          View Works
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Button variant="default" size="lg" asChild>
+              <Link to="/artists">
+                Meet All Artists
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
