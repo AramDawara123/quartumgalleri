@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, Eye, ShoppingBag } from "lucide-react";
+import { ArrowRight, Calendar, Eye, ShoppingBag, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import galleryHero from "@/assets/gallery-hero.jpg";
@@ -56,6 +56,33 @@ const Home = () => {
       title: "Gallery Night Opening",
       description: "Exclusive preview of new acquisitions",
     },
+  ];
+
+  const testimonials = [
+    {
+      id: 1,
+      name: "Sarah Mitchell",
+      role: "Art Collector",
+      content: "Artisan Gallery has an incredible eye for contemporary art. Every piece I've purchased has become a conversation starter in my home.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+    },
+    {
+      id: 2,
+      name: "Michael Chen",
+      role: "Interior Designer",
+      content: "The quality and curation at Artisan Gallery is unmatched. Their team helped me find the perfect pieces for my client's penthouse.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    },
+    {
+      id: 3,
+      name: "Elena Rodriguez",
+      role: "Art Enthusiast",
+      content: "From emerging artists to established masters, this gallery showcases the very best. Their exhibitions are always thought-provoking.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+    }
   ];
 
   return (
@@ -204,6 +231,75 @@ const Home = () => {
                 <Calendar className="ml-2 h-5 w-5" />
               </Link>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-4 bg-muted/20">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-primary">
+              What Our Collectors Say
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Discover why art enthusiasts and collectors trust us to curate their perfect pieces
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card
+                key={testimonial.id}
+                className="gallery-hover border border-border/50 hover:border-accent/50 bg-card/80 backdrop-blur-sm"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <CardContent className="p-8">
+                  <div className="flex items-center mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 fill-gallery-gold text-gallery-gold" />
+                    ))}
+                  </div>
+                  
+                  <Quote className="h-8 w-8 text-accent/30 mb-4" />
+                  
+                  <p className="text-muted-foreground mb-6 leading-relaxed italic">
+                    "{testimonial.content}"
+                  </p>
+                  
+                  <div className="flex items-center">
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-12 h-12 rounded-full object-cover mr-4 ring-2 ring-accent/20"
+                    />
+                    <div>
+                      <h4 className="font-semibold text-primary">{testimonial.name}</h4>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center mt-16">
+            <div className="inline-flex items-center space-x-6 p-6 bg-card rounded-lg border border-border/50">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary">500+</div>
+                <div className="text-sm text-muted-foreground">Happy Collectors</div>
+              </div>
+              <div className="h-12 w-px bg-border"></div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary">1200+</div>
+                <div className="text-sm text-muted-foreground">Artworks Sold</div>
+              </div>
+              <div className="h-12 w-px bg-border"></div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary">15+</div>
+                <div className="text-sm text-muted-foreground">Years Experience</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
