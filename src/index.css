@@ -115,12 +115,14 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-serif;
+    @apply bg-background text-foreground font-sans;
     font-feature-settings: "kern" 1, "liga" 1;
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans tracking-tight;
+    @apply font-serif tracking-tight;
+    font-feature-settings: "kern" 1, "liga" 1;
   }
 
   .gallery-hover {
