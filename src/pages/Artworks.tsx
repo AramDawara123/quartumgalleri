@@ -96,9 +96,9 @@ const Artworks = () => {
   const filteredArtworks = artworks.filter(artwork => {
     const matchesSearch = artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          artwork.artist.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesArtist = !selectedArtist || artwork.artist === selectedArtist;
-    const matchesCategory = !selectedCategory || artwork.category === selectedCategory;
-    const matchesPrice = !priceRange || 
+    const matchesArtist = selectedArtist === "all-artists" || !selectedArtist || artwork.artist === selectedArtist;
+    const matchesCategory = selectedCategory === "all-categories" || !selectedCategory || artwork.category === selectedCategory;
+    const matchesPrice = priceRange === "all-prices" || !priceRange || 
       (priceRange === "under-3000" && artwork.price < 3000) ||
       (priceRange === "3000-4000" && artwork.price >= 3000 && artwork.price <= 4000) ||
       (priceRange === "over-4000" && artwork.price > 4000);
@@ -138,7 +138,7 @@ const Artworks = () => {
                   <SelectValue placeholder="All Artists" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Artists</SelectItem>
+                  <SelectItem value="all-artists">All Artists</SelectItem>
                   {artists.map(artist => (
                     <SelectItem key={artist} value={artist}>{artist}</SelectItem>
                   ))}
@@ -150,7 +150,7 @@ const Artworks = () => {
                   <SelectValue placeholder="All Categories" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Categories</SelectItem>
+                  <SelectItem value="all-categories">All Categories</SelectItem>
                   {categories.map(category => (
                     <SelectItem key={category} value={category}>{category}</SelectItem>
                   ))}
@@ -162,7 +162,7 @@ const Artworks = () => {
                   <SelectValue placeholder="All Prices" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Prices</SelectItem>
+                  <SelectItem value="all-prices">All Prices</SelectItem>
                   <SelectItem value="under-3000">Under $3,000</SelectItem>
                   <SelectItem value="3000-4000">$3,000 - $4,000</SelectItem>
                   <SelectItem value="over-4000">Over $4,000</SelectItem>
@@ -248,9 +248,9 @@ const Artworks = () => {
             </p>
             <Button variant="default" onClick={() => {
               setSearchTerm("");
-              setSelectedArtist("");
-              setSelectedCategory("");
-              setPriceRange("");
+              setSelectedArtist("all-artists");
+              setSelectedCategory("all-categories");
+              setPriceRange("all-prices");
             }}>
               Clear Filters
             </Button>
