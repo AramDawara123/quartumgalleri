@@ -9,19 +9,19 @@ const About = () => {
       name: "Victoria Sterling",
       role: "Gallery Director & Curator",
       bio: "With over 15 years in contemporary art curation, Victoria has shaped the gallery's vision and established relationships with emerging and established artists worldwide.",
-      image: galleryHero,
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
     },
     {
       name: "Marcus Chen",
       role: "Senior Art Consultant",
       bio: "Marcus brings expertise in art valuation and collection management, helping clients discover pieces that resonate with their aesthetic and investment goals.",
-      image: galleryHero,
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
     },
     {
       name: "Isabella Rodriguez",
       role: "Education & Outreach Director",
       bio: "Isabella develops our educational programs and community partnerships, making contemporary art accessible to diverse audiences through innovative initiatives.",
-      image: galleryHero,
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
     },
   ];
 
