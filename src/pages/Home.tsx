@@ -442,7 +442,7 @@ const Home = () => {
                 Browse Collection
               </Link>
             </Button>
-            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-luxury">
+            <Button variant="outline" size="lg" className="bg-white text-black border-white hover:bg-gray-100 hover:text-black">
               <Link to="/contact">
                 Get in Touch
               </Link>
