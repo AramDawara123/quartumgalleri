@@ -253,7 +253,7 @@ const About = () => {
             <Button variant="hero" size="lg">
               Schedule a Visit
             </Button>
-            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-luxury">
+            <Button variant="outline" size="lg" className="bg-white text-primary border-white hover:bg-white/90">
               Contact Our Team
             </Button>
           </div>
