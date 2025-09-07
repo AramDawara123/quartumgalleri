@@ -15,7 +15,7 @@ const Artists = () => {
       achievements: ["Venice Biennale 2022", "Guggenheim Fellowship", "MoMA Collection"],
       yearsActive: "15+ years",
       artworkCount: 47,
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
       featured: true,
     },
     {
@@ -27,7 +27,7 @@ const Artists = () => {
       achievements: ["Ars Electronica Prize", "Digital Art Museum Tokyo", "Tech Art Festival Winner"],
       yearsActive: "12+ years",
       artworkCount: 32,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=400&h=400&fit=crop&crop=face",
       featured: true,
     },
     {
@@ -39,7 +39,7 @@ const Artists = () => {
       achievements: ["European Art Prize", "National Gallery Madrid", "Landscape Artist of the Year"],
       yearsActive: "18+ years",
       artworkCount: 63,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face",
       featured: false,
     },
     {
@@ -51,7 +51,7 @@ const Artists = () => {
       achievements: ["Royal Academy Summer Exhibition", "National Portrait Gallery", "BP Portrait Award"],
       yearsActive: "20+ years",
       artworkCount: 89,
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
       featured: true,
     },
     {
@@ -63,7 +63,7 @@ const Artists = () => {
       achievements: ["Centre Pompidou Collection", "Digital Art Biennale", "Innovation in Art Award"],
       yearsActive: "10+ years",
       artworkCount: 28,
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face",
       featured: false,
     },
     {
@@ -75,7 +75,7 @@ const Artists = () => {
       achievements: ["São Paulo Art Festival", "Urban Art Museum", "Social Impact Artist Award"],
       yearsActive: "8+ years",
       artworkCount: 41,
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
       featured: false,
     }
   ];
