@@ -25,7 +25,7 @@ const Navigation = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <h1 className="text-2xl font-serif font-semibold tracking-tight text-primary">
-              Artisan Gallery
+              quartumgalleri
             </h1>
           </Link>
 
