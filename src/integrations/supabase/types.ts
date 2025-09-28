@@ -14,7 +14,166 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      artists: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          image_url: string | null
+          name: string
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      artworks: {
+        Row: {
+          artist_id: string | null
+          available: boolean | null
+          category: string | null
+          created_at: string | null
+          description: string | null
+          dimensions: string | null
+          id: string
+          image_url: string | null
+          medium: string | null
+          price: number
+          title: string
+          updated_at: string | null
+          year_created: number | null
+        }
+        Insert: {
+          artist_id?: string | null
+          available?: boolean | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          dimensions?: string | null
+          id?: string
+          image_url?: string | null
+          medium?: string | null
+          price: number
+          title: string
+          updated_at?: string | null
+          year_created?: number | null
+        }
+        Update: {
+          artist_id?: string | null
+          available?: boolean | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          dimensions?: string | null
+          id?: string
+          image_url?: string | null
+          medium?: string | null
+          price?: number
+          title?: string
+          updated_at?: string | null
+          year_created?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artworks_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cart_items: {
+        Row: {
+          artwork_id: string | null
+          created_at: string | null
+          id: string
+          quantity: number | null
+          session_id: string
+        }
+        Insert: {
+          artwork_id?: string | null
+          created_at?: string | null
+          id?: string
+          quantity?: number | null
+          session_id: string
+        }
+        Update: {
+          artwork_id?: string | null
+          created_at?: string | null
+          id?: string
+          quantity?: number | null
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_items_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "artworks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          event_date: string
+          id: string
+          image_url: string | null
+          location: string | null
+          max_attendees: number | null
+          price: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          event_date: string
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          max_attendees?: number | null
+          price?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          event_date?: string
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          max_attendees?: number | null
+          price?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
