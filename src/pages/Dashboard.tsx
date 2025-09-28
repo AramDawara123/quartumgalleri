@@ -3,8 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArtistsManager } from '@/components/dashboard/ArtistsManager';
 import { ArtworksManager } from '@/components/dashboard/ArtworksManager';
+import { ArtistArtworksManager } from '@/components/dashboard/ArtistArtworksManager';
 import { EventsManager } from '@/components/dashboard/EventsManager';
-import { Palette, Users, Calendar } from 'lucide-react';
+import { Palette, Users, Calendar, UserCheck } from 'lucide-react';
 
 const Dashboard = () => {
   return (
@@ -15,10 +16,14 @@ const Dashboard = () => {
       </div>
 
       <Tabs defaultValue="artworks" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="artworks" className="flex items-center gap-2">
             <Palette className="h-4 w-4" />
-            Kunstwerken
+            Alle Kunstwerken
+          </TabsTrigger>
+          <TabsTrigger value="artist-artworks" className="flex items-center gap-2">
+            <UserCheck className="h-4 w-4" />
+            Per Kunstenaar
           </TabsTrigger>
           <TabsTrigger value="artists" className="flex items-center gap-2">
             <Users className="h-4 w-4" />
@@ -33,13 +38,27 @@ const Dashboard = () => {
         <TabsContent value="artworks">
           <Card>
             <CardHeader>
-              <CardTitle>Kunstwerken Beheren</CardTitle>
+              <CardTitle>Alle Kunstwerken Beheren</CardTitle>
               <CardDescription>
-                Voeg nieuwe kunstwerken toe, bewerk bestaande werken of verwijder ze
+                Overzicht van alle kunstwerken in de galerie
               </CardDescription>
             </CardHeader>
             <CardContent>
               <ArtworksManager />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="artist-artworks">
+          <Card>
+            <CardHeader>
+              <CardTitle>Kunstwerken per Kunstenaar</CardTitle>
+              <CardDescription>
+                Beheer de kunstwerken van specifieke kunstenaars
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ArtistArtworksManager />
             </CardContent>
           </Card>
         </TabsContent>
