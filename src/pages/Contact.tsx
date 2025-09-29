@@ -5,56 +5,42 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
 const Contact = () => {
-  const contactInfo = [
-    {
-      icon: MapPin,
-      title: "Visit Our Gallery",
-      details: [
-        "123 Art District Avenue",
-        "Cultural Quarter, Suite 100",
-        "New York, NY 10001"
-      ],
-    },
-    {
-      icon: Phone,
-      title: "Call Us",
-      details: [
-        "+1 (555) 123-4567",
-        "+1 (555) 123-4568 (Sales)",
-        "+1 (555) 123-4569 (Events)"
-      ],
-    },
-    {
-      icon: Mail,
-      title: "Email Us",
-      details: [
-        "info@artisangallery.com",
-        "sales@artisangallery.com",
-        "events@artisangallery.com"
-      ],
-    },
-    {
-      icon: Clock,
-      title: "Gallery Hours",
-      details: [
-        "Tuesday - Saturday: 10AM - 8PM",
-        "Sunday: 12PM - 6PM",
-        "Monday: Closed"
-      ],
-    },
-  ];
-
-  const socialLinks = [
-    { name: "Instagram", handle: "@artisangallery", url: "#" },
-    { name: "Facebook", handle: "Artisan Gallery", url: "#" },
-    { name: "Twitter", handle: "@artisan_gallery", url: "#" },
-    { name: "LinkedIn", handle: "Artisan Gallery", url: "#" },
-  ];
-
-  return (
-    <main className="min-h-screen py-8">
+  const contactInfo = [{
+    icon: MapPin,
+    title: "Visit Our Gallery",
+    details: ["123 Art District Avenue", "Cultural Quarter, Suite 100", "New York, NY 10001"]
+  }, {
+    icon: Phone,
+    title: "Call Us",
+    details: ["+1 (555) 123-4567", "+1 (555) 123-4568 (Sales)", "+1 (555) 123-4569 (Events)"]
+  }, {
+    icon: Mail,
+    title: "Email Us",
+    details: ["info@artisangallery.com", "sales@artisangallery.com", "events@artisangallery.com"]
+  }, {
+    icon: Clock,
+    title: "Gallery Hours",
+    details: ["Tuesday - Saturday: 10AM - 8PM", "Sunday: 12PM - 6PM", "Monday: Closed"]
+  }];
+  const socialLinks = [{
+    name: "Instagram",
+    handle: "@artisangallery",
+    url: "#"
+  }, {
+    name: "Facebook",
+    handle: "Artisan Gallery",
+    url: "#"
+  }, {
+    name: "Twitter",
+    handle: "@artisan_gallery",
+    url: "#"
+  }, {
+    name: "LinkedIn",
+    handle: "Artisan Gallery",
+    url: "#"
+  }];
+  return <main className="min-h-screen py-8">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -75,12 +61,9 @@ const Contact = () => {
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {contactInfo.map((info, index) => (
-                  <Card
-                    key={index}
-                    className="gallery-hover border border-border/50 hover:border-accent/50"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
+                {contactInfo.map((info, index) => <Card key={index} className="gallery-hover border border-border/50 hover:border-accent/50" style={{
+                animationDelay: `${index * 0.1}s`
+              }}>
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
                         <div className="p-3 bg-accent/10 rounded-lg">
@@ -91,17 +74,14 @@ const Contact = () => {
                             {info.title}
                           </h3>
                           <div className="space-y-1">
-                            {info.details.map((detail, idx) => (
-                              <p key={idx} className="text-muted-foreground text-sm">
+                            {info.details.map((detail, idx) => <p key={idx} className="text-muted-foreground text-sm">
                                 {detail}
-                              </p>
-                            ))}
+                              </p>)}
                           </div>
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </div>
 
@@ -111,19 +91,13 @@ const Contact = () => {
                 Follow Our Journey
               </h3>
               <div className="space-y-3">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.url}
-                    className="flex items-center gap-4 p-4 rounded-lg border border-border/50 hover:border-accent/50 transition-colors group"
-                  >
+                {socialLinks.map((social, index) => <a key={index} href={social.url} className="flex items-center gap-4 p-4 rounded-lg border border-border/50 hover:border-accent/50 transition-colors group">
                     <div className="w-3 h-3 bg-accent rounded-full group-hover:scale-110 transition-transform" />
                     <div>
                       <span className="font-medium text-primary">{social.name}</span>
                       <span className="text-muted-foreground ml-2">{social.handle}</span>
                     </div>
-                  </a>
-                ))}
+                  </a>)}
               </div>
             </div>
 
@@ -155,40 +129,22 @@ const Contact = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name</Label>
-                      <Input
-                        id="firstName"
-                        placeholder="Your first name"
-                        className="transition-all duration-300 focus:border-accent"
-                      />
+                      <Input id="firstName" placeholder="Your first name" className="transition-all duration-300 focus:border-accent" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastName">Last Name</Label>
-                      <Input
-                        id="lastName"
-                        placeholder="Your last name"
-                        className="transition-all duration-300 focus:border-accent"
-                      />
+                      <Input id="lastName" placeholder="Your last name" className="transition-all duration-300 focus:border-accent" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="email">Email Address</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your.email@example.com"
-                      className="transition-all duration-300 focus:border-accent"
-                    />
+                    <Input id="email" type="email" placeholder="your.email@example.com" className="transition-all duration-300 focus:border-accent" />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number (Optional)</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="+1 (555) 123-4567"
-                      className="transition-all duration-300 focus:border-accent"
-                    />
+                    <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" className="transition-all duration-300 focus:border-accent" />
                   </div>
 
                   <div className="space-y-2">
@@ -210,12 +166,7 @@ const Contact = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      placeholder="Tell us about your interest, specific artworks you'd like to know more about, or any questions you have..."
-                      rows={6}
-                      className="transition-all duration-300 focus:border-accent resize-none"
-                    />
+                    <Textarea id="message" placeholder="Tell us about your interest, specific artworks you'd like to know more about, or any questions you have..." rows={6} className="transition-all duration-300 focus:border-accent resize-none" />
                   </div>
 
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -266,15 +217,13 @@ const Contact = () => {
               <Button variant="hero" size="lg">
                 Book Consultation
               </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-luxury">
+              <Button variant="outline" size="lg" className="border-white hover:bg-white text-black">
                 Learn More
               </Button>
             </div>
           </div>
         </div>
       </div>
-    </main>
-  );
+    </main>;
 };
-
 export default Contact;
