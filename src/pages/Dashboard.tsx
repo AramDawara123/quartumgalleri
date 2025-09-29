@@ -5,6 +5,7 @@ import { ArtworksManager } from '@/components/dashboard/ArtworksManager';
 import { ArtistArtworksManager } from '@/components/dashboard/ArtistArtworksManager';
 import { EventsManager } from '@/components/dashboard/EventsManager';
 import { IncomingOrdersManager } from '@/components/dashboard/IncomingOrdersManager';
+import { DiscountsManager } from '@/components/dashboard/DiscountsManager';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 
@@ -80,6 +81,20 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <IncomingOrdersManager />
+            </CardContent>
+          </Card>
+        );
+      case 'discounts':
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle>Manage Discounts</CardTitle>
+              <CardDescription>
+                Create and manage discount codes for artworks and events
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DiscountsManager />
             </CardContent>
           </Card>
         );

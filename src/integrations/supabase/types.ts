@@ -135,6 +135,57 @@ export type Database = {
           },
         ]
       }
+      discounts: {
+        Row: {
+          active: boolean
+          applies_to: Database["public"]["Enums"]["applies_to"]
+          code: string
+          created_at: string
+          current_uses: number
+          description: string | null
+          discount_type: Database["public"]["Enums"]["discount_type"]
+          discount_value: number
+          end_date: string | null
+          id: string
+          max_uses: number | null
+          min_purchase: number | null
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          applies_to: Database["public"]["Enums"]["applies_to"]
+          code: string
+          created_at?: string
+          current_uses?: number
+          description?: string | null
+          discount_type?: Database["public"]["Enums"]["discount_type"]
+          discount_value: number
+          end_date?: string | null
+          id?: string
+          max_uses?: number | null
+          min_purchase?: number | null
+          start_date?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          applies_to?: Database["public"]["Enums"]["applies_to"]
+          code?: string
+          created_at?: string
+          current_uses?: number
+          description?: string | null
+          discount_type?: Database["public"]["Enums"]["discount_type"]
+          discount_value?: number
+          end_date?: string | null
+          id?: string
+          max_uses?: number | null
+          min_purchase?: number | null
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           created_at: string | null
@@ -226,7 +277,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      applies_to: "artwork" | "event"
+      discount_type: "percentage" | "fixed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -353,6 +405,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      applies_to: ["artwork", "event"],
+      discount_type: ["percentage", "fixed"],
+    },
   },
 } as const
