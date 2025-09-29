@@ -174,7 +174,7 @@ export type Database = {
         }
         Relationships: []
       }
-      incoming_products: {
+      incoming_orders: {
         Row: {
           artist_id: string | null
           created_at: string

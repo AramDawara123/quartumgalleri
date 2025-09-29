@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { Palette, Users, Calendar, UserCheck, Package } from 'lucide-react';
+import { Palette, Users, Calendar, UserCheck, ShoppingCart } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -17,7 +17,7 @@ const items = [
   { title: 'Per Kunstenaar', icon: UserCheck, section: 'artist-artworks' },
   { title: 'Kunstenaars', icon: Users, section: 'artists' },
   { title: 'Evenementen', icon: Calendar, section: 'events' },
-  { title: 'Inkomende Producten', icon: Package, section: 'incoming' },
+  { title: 'Inkomende Bestellingen', icon: ShoppingCart, section: 'incoming' },
 ];
 
 export function AppSidebar({ activeSection, onSectionChange }: { 

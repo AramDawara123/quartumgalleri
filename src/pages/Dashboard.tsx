@@ -4,7 +4,7 @@ import { ArtistsManager } from '@/components/dashboard/ArtistsManager';
 import { ArtworksManager } from '@/components/dashboard/ArtworksManager';
 import { ArtistArtworksManager } from '@/components/dashboard/ArtistArtworksManager';
 import { EventsManager } from '@/components/dashboard/EventsManager';
-import { IncomingProductsManager } from '@/components/dashboard/IncomingProductsManager';
+import { IncomingOrdersManager } from '@/components/dashboard/IncomingOrdersManager';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 
@@ -73,13 +73,13 @@ const Dashboard = () => {
         return (
           <Card>
             <CardHeader>
-              <CardTitle>Inkomende Producten</CardTitle>
+              <CardTitle>Inkomende Bestellingen</CardTitle>
               <CardDescription>
                 Beheer verwachte kunstwerken en leveringen
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <IncomingProductsManager />
+              <IncomingOrdersManager />
             </CardContent>
           </Card>
         );

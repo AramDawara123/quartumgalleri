@@ -23,7 +23,7 @@ import { toast } from 'sonner';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-interface IncomingProduct {
+interface IncomingOrder {
   id: string;
   title: string;
   description: string | null;
@@ -39,11 +39,11 @@ interface Artist {
   name: string;
 }
 
-export const IncomingProductsManager = () => {
-  const [products, setProducts] = useState<IncomingProduct[]>([]);
+export const IncomingOrdersManager = () => {
+  const [orders, setOrders] = useState<IncomingOrder[]>([]);
   const [artists, setArtists] = useState<Artist[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<IncomingProduct | null>(null);
+  const [editingOrder, setEditingOrder] = useState<IncomingOrder | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -54,21 +54,21 @@ export const IncomingProductsManager = () => {
   });
 
   useEffect(() => {
-    loadProducts();
+    loadOrders();
     loadArtists();
   }, []);
 
-  const loadProducts = async () => {
+  const loadOrders = async () => {
     const { data, error } = await (supabase as any)
-      .from('incoming_products')
+      .from('incoming_orders')
       .select('*')
       .order('created_at', { ascending: false });
 
     if (error) {
-      toast.error('Fout bij laden van producten');
+      toast.error('Fout bij laden van bestellingen');
       return;
     }
-    setProducts(data || []);
+    setOrders(data || []);
   };
 
   const loadArtists = async () => {
@@ -87,57 +87,57 @@ export const IncomingProductsManager = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (editingProduct) {
+    if (editingOrder) {
       const { error } = await (supabase as any)
-        .from('incoming_products')
+        .from('incoming_orders')
         .update(formData)
-        .eq('id', editingProduct.id);
+        .eq('id', editingOrder.id);
 
       if (error) {
         toast.error('Fout bij bijwerken');
         return;
       }
-      toast.success('Product bijgewerkt');
+      toast.success('Bestelling bijgewerkt');
     } else {
-      const { error } = await (supabase as any).from('incoming_products').insert([formData]);
+      const { error } = await (supabase as any).from('incoming_orders').insert([formData]);
 
       if (error) {
         toast.error('Fout bij toevoegen');
         return;
       }
-      toast.success('Product toegevoegd');
+      toast.success('Bestelling toegevoegd');
     }
 
     setIsDialogOpen(false);
     resetForm();
-    loadProducts();
+    loadOrders();
   };
 
-  const handleEdit = (product: IncomingProduct) => {
-    setEditingProduct(product);
+  const handleEdit = (order: IncomingOrder) => {
+    setEditingOrder(order);
     setFormData({
-      title: product.title,
-      description: product.description || '',
-      artist_id: product.artist_id || '',
-      expected_date: product.expected_date || '',
-      status: product.status,
-      notes: product.notes || '',
+      title: order.title,
+      description: order.description || '',
+      artist_id: order.artist_id || '',
+      expected_date: order.expected_date || '',
+      status: order.status,
+      notes: order.notes || '',
     });
     setIsDialogOpen(true);
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Weet u zeker dat u dit product wilt verwijderen?')) return;
+    if (!confirm('Weet u zeker dat u deze bestelling wilt verwijderen?')) return;
 
-    const { error } = await (supabase as any).from('incoming_products').delete().eq('id', id);
+    const { error } = await (supabase as any).from('incoming_orders').delete().eq('id', id);
 
     if (error) {
       toast.error('Fout bij verwijderen');
       return;
     }
 
-    toast.success('Product verwijderd');
-    loadProducts();
+    toast.success('Bestelling verwijderd');
+    loadOrders();
   };
 
   const resetForm = () => {
@@ -149,7 +149,7 @@ export const IncomingProductsManager = () => {
       status: 'pending',
       notes: '',
     });
-    setEditingProduct(null);
+    setEditingOrder(null);
   };
 
   const getStatusLabel = (status: string) => {
@@ -172,13 +172,13 @@ export const IncomingProductsManager = () => {
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Nieuw Product
+              Nieuwe Bestelling
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
-                {editingProduct ? 'Product Bewerken' : 'Nieuw Product Toevoegen'}
+                {editingOrder ? 'Bestelling Bewerken' : 'Nieuwe Bestelling Toevoegen'}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -256,7 +256,7 @@ export const IncomingProductsManager = () => {
                   Annuleren
                 </Button>
                 <Button type="submit">
-                  {editingProduct ? 'Bijwerken' : 'Toevoegen'}
+                  {editingOrder ? 'Bijwerken' : 'Toevoegen'}
                 </Button>
               </div>
             </form>
@@ -275,27 +275,27 @@ export const IncomingProductsManager = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((product) => {
-            const artist = artists.find((a) => a.id === product.artist_id);
+          {orders.map((order) => {
+            const artist = artists.find((a) => a.id === order.artist_id);
             return (
-              <TableRow key={product.id}>
-                <TableCell>{product.title}</TableCell>
+              <TableRow key={order.id}>
+                <TableCell>{order.title}</TableCell>
                 <TableCell>{artist?.name || '-'}</TableCell>
                 <TableCell>
-                  {product.expected_date
-                    ? new Date(product.expected_date).toLocaleDateString('nl-NL')
+                  {order.expected_date
+                    ? new Date(order.expected_date).toLocaleDateString('nl-NL')
                     : '-'}
                 </TableCell>
-                <TableCell>{getStatusLabel(product.status)}</TableCell>
+                <TableCell>{getStatusLabel(order.status)}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(product)}>
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(order)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => handleDelete(order.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -304,10 +304,10 @@ export const IncomingProductsManager = () => {
               </TableRow>
             );
           })}
-          {products.length === 0 && (
+          {orders.length === 0 && (
             <TableRow>
               <TableCell colSpan={5} className="text-center text-muted-foreground">
-                Geen producten gevonden
+                Geen bestellingen gevonden
               </TableCell>
             </TableRow>
           )}
