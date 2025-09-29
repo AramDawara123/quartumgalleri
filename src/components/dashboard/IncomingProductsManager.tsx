@@ -59,7 +59,7 @@ export const IncomingProductsManager = () => {
   }, []);
 
   const loadProducts = async () => {
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('incoming_products')
       .select('*')
       .order('created_at', { ascending: false });
@@ -88,7 +88,7 @@ export const IncomingProductsManager = () => {
     e.preventDefault();
 
     if (editingProduct) {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('incoming_products')
         .update(formData)
         .eq('id', editingProduct.id);
@@ -99,7 +99,7 @@ export const IncomingProductsManager = () => {
       }
       toast.success('Product bijgewerkt');
     } else {
-      const { error } = await supabase.from('incoming_products').insert([formData]);
+      const { error } = await (supabase as any).from('incoming_products').insert([formData]);
 
       if (error) {
         toast.error('Fout bij toevoegen');
@@ -129,7 +129,7 @@ export const IncomingProductsManager = () => {
   const handleDelete = async (id: string) => {
     if (!confirm('Weet u zeker dat u dit product wilt verwijderen?')) return;
 
-    const { error } = await supabase.from('incoming_products').delete().eq('id', id);
+    const { error } = await (supabase as any).from('incoming_products').delete().eq('id', id);
 
     if (error) {
       toast.error('Fout bij verwijderen');

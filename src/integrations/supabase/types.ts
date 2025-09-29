@@ -174,6 +174,50 @@ export type Database = {
         }
         Relationships: []
       }
+      incoming_products: {
+        Row: {
+          artist_id: string | null
+          created_at: string
+          description: string | null
+          expected_date: string | null
+          id: string
+          notes: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          artist_id?: string | null
+          created_at?: string
+          description?: string | null
+          expected_date?: string | null
+          id?: string
+          notes?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          artist_id?: string | null
+          created_at?: string
+          description?: string | null
+          expected_date?: string | null
+          id?: string
+          notes?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incoming_products_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
