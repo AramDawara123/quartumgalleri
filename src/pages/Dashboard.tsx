@@ -1,41 +1,20 @@
-import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArtistsManager } from '@/components/dashboard/ArtistsManager';
 import { ArtworksManager } from '@/components/dashboard/ArtworksManager';
 import { ArtistArtworksManager } from '@/components/dashboard/ArtistArtworksManager';
 import { EventsManager } from '@/components/dashboard/EventsManager';
-import { Palette, Users, Calendar, UserCheck } from 'lucide-react';
+import { IncomingProductsManager } from '@/components/dashboard/IncomingProductsManager';
+import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/dashboard/AppSidebar';
 
 const Dashboard = () => {
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
-        <p className="text-muted-foreground">Beheer uw kunstwerken, kunstenaars en evenementen</p>
-      </div>
+  const [activeSection, setActiveSection] = useState('artworks');
 
-      <Tabs defaultValue="artworks" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="artworks" className="flex items-center gap-2">
-            <Palette className="h-4 w-4" />
-            Alle Kunstwerken
-          </TabsTrigger>
-          <TabsTrigger value="artist-artworks" className="flex items-center gap-2">
-            <UserCheck className="h-4 w-4" />
-            Per Kunstenaar
-          </TabsTrigger>
-          <TabsTrigger value="artists" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            Kunstenaars
-          </TabsTrigger>
-          <TabsTrigger value="events" className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            Evenementen
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="artworks">
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'artworks':
+        return (
           <Card>
             <CardHeader>
               <CardTitle>Alle Kunstwerken Beheren</CardTitle>
@@ -47,9 +26,9 @@ const Dashboard = () => {
               <ArtworksManager />
             </CardContent>
           </Card>
-        </TabsContent>
-
-        <TabsContent value="artist-artworks">
+        );
+      case 'artist-artworks':
+        return (
           <Card>
             <CardHeader>
               <CardTitle>Kunstwerken per Kunstenaar</CardTitle>
@@ -61,9 +40,9 @@ const Dashboard = () => {
               <ArtistArtworksManager />
             </CardContent>
           </Card>
-        </TabsContent>
-
-        <TabsContent value="artists">
+        );
+      case 'artists':
+        return (
           <Card>
             <CardHeader>
               <CardTitle>Kunstenaars Beheren</CardTitle>
@@ -75,9 +54,9 @@ const Dashboard = () => {
               <ArtistsManager />
             </CardContent>
           </Card>
-        </TabsContent>
-
-        <TabsContent value="events">
+        );
+      case 'events':
+        return (
           <Card>
             <CardHeader>
               <CardTitle>Evenementen Beheren</CardTitle>
@@ -89,9 +68,46 @@ const Dashboard = () => {
               <EventsManager />
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
+        );
+      case 'incoming':
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle>Inkomende Producten</CardTitle>
+              <CardDescription>
+                Beheer verwachte kunstwerken en leveringen
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <IncomingProductsManager />
+            </CardContent>
+          </Card>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+        <AppSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+        <SidebarInset className="flex-1">
+          <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-6">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-2xl font-bold">Dashboard</h1>
+              <p className="text-sm text-muted-foreground">
+                Beheer uw kunstwerken, kunstenaars en evenementen
+              </p>
+            </div>
+          </header>
+          <main className="p-6">
+            {renderContent()}
+          </main>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
 };
 
