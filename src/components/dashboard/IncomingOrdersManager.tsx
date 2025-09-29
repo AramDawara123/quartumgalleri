@@ -316,3 +316,5 @@ export const IncomingOrdersManager = () => {
     </div>
   );
 };
+
+export default IncomingOrdersManager;
