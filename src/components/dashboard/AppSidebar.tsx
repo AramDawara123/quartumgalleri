@@ -13,11 +13,11 @@ import {
 } from '@/components/ui/sidebar';
 
 const items = [
-  { title: 'Alle Kunstwerken', icon: Palette, section: 'artworks' },
-  { title: 'Per Kunstenaar', icon: UserCheck, section: 'artist-artworks' },
-  { title: 'Kunstenaars', icon: Users, section: 'artists' },
-  { title: 'Evenementen', icon: Calendar, section: 'events' },
-  { title: 'Inkomende Bestellingen', icon: ShoppingCart, section: 'incoming' },
+  { title: 'All Artworks', icon: Palette, section: 'artworks' },
+  { title: 'By Artist', icon: UserCheck, section: 'artist-artworks' },
+  { title: 'Artists', icon: Users, section: 'artists' },
+  { title: 'Events', icon: Calendar, section: 'events' },
+  { title: 'Incoming Orders', icon: ShoppingCart, section: 'incoming' },
 ];
 
 export function AppSidebar({ activeSection, onSectionChange }: { 

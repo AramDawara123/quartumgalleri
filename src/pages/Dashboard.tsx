@@ -17,9 +17,9 @@ const Dashboard = () => {
         return (
           <Card>
             <CardHeader>
-              <CardTitle>Alle Kunstwerken Beheren</CardTitle>
+              <CardTitle>Manage All Artworks</CardTitle>
               <CardDescription>
-                Overzicht van alle kunstwerken in de galerie
+                Overview of all artworks in the gallery
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -31,9 +31,9 @@ const Dashboard = () => {
         return (
           <Card>
             <CardHeader>
-              <CardTitle>Kunstwerken per Kunstenaar</CardTitle>
+              <CardTitle>Artworks by Artist</CardTitle>
               <CardDescription>
-                Beheer de kunstwerken van specifieke kunstenaars
+                Manage artworks by specific artists
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -45,9 +45,9 @@ const Dashboard = () => {
         return (
           <Card>
             <CardHeader>
-              <CardTitle>Kunstenaars Beheren</CardTitle>
+              <CardTitle>Manage Artists</CardTitle>
               <CardDescription>
-                Beheer de kunstenaars in uw galerie
+                Manage the artists in your gallery
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -59,9 +59,9 @@ const Dashboard = () => {
         return (
           <Card>
             <CardHeader>
-              <CardTitle>Evenementen Beheren</CardTitle>
+              <CardTitle>Manage Events</CardTitle>
               <CardDescription>
-                Organiseer en beheer galerie evenementen
+                Organize and manage gallery events
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -73,9 +73,9 @@ const Dashboard = () => {
         return (
           <Card>
             <CardHeader>
-              <CardTitle>Inkomende Bestellingen</CardTitle>
+              <CardTitle>Incoming Orders</CardTitle>
               <CardDescription>
-                Beheer verwachte kunstwerken en leveringen
+                Manage expected artworks and deliveries
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -98,7 +98,7 @@ const Dashboard = () => {
             <div>
               <h1 className="text-2xl font-bold">Dashboard</h1>
               <p className="text-sm text-muted-foreground">
-                Beheer uw kunstwerken, kunstenaars en evenementen
+                Manage your artworks, artists and events
               </p>
             </div>
           </header>
