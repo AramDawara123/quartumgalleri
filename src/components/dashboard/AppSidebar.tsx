@@ -29,7 +29,7 @@ export function AppSidebar({ activeSection, onSectionChange }: {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent className="mt-4">
+      <SidebarContent className="mt-8">
         <SidebarGroup>
           <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
           <SidebarGroupContent>
