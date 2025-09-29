@@ -1,13 +1,115 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Minus, Plus, Trash2, ShoppingBag, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, clearCart, total, itemCount } = useCart();
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState<{
+    code: string;
+    type: 'percentage' | 'fixed';
+    value: number;
+    amount: number;
+  } | null>(null);
+  const { toast } = useToast();
+
+  const applyDiscountCode = async () => {
+    if (!discountCode.trim()) {
+      toast({
+        title: "Fout",
+        description: "Voer een kortingscode in",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { data: discount, error } = await supabase
+      .from('discounts')
+      .select('*')
+      .eq('code', discountCode.trim())
+      .eq('active', true)
+      .eq('applies_to', 'artwork')
+      .single();
+
+    if (error || !discount) {
+      toast({
+        title: "Ongeldige code",
+        description: "Deze kortingscode is niet geldig of verlopen",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check if discount is still valid (dates and usage)
+    const now = new Date();
+    const startDate = new Date(discount.start_date);
+    const endDate = discount.end_date ? new Date(discount.end_date) : null;
+
+    if (now < startDate || (endDate && now > endDate)) {
+      toast({
+        title: "Verlopen code",
+        description: "Deze kortingscode is verlopen",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (discount.max_uses && discount.current_uses >= discount.max_uses) {
+      toast({
+        title: "Code gebruikt",
+        description: "Deze kortingscode is al het maximaal aantal keren gebruikt",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (discount.min_purchase && total < Number(discount.min_purchase)) {
+      toast({
+        title: "Minimum aankoop niet bereikt",
+        description: `Minimum aankoop van €${Number(discount.min_purchase).toFixed(2)} vereist`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Calculate discount amount
+    let discountAmount = 0;
+    if (discount.discount_type === 'percentage') {
+      discountAmount = (total * Number(discount.discount_value)) / 100;
+    } else {
+      discountAmount = Number(discount.discount_value);
+    }
+
+    setAppliedDiscount({
+      code: discount.code,
+      type: discount.discount_type,
+      value: Number(discount.discount_value),
+      amount: discountAmount,
+    });
+
+    toast({
+      title: "Korting toegepast!",
+      description: `€${discountAmount.toFixed(2)} korting toegepast`,
+    });
+  };
+
+  const removeDiscount = () => {
+    setAppliedDiscount(null);
+    setDiscountCode('');
+    toast({
+      title: "Korting verwijderd",
+      description: "De kortingscode is verwijderd van uw winkelwagen",
+    });
+  };
+
+  const finalTotal = appliedDiscount ? total - appliedDiscount.amount : total;
 
   if (items.length === 0) {
     return (
@@ -111,10 +213,60 @@ const Cart = () => {
                   <span>Verzendkosten:</span>
                   <span>Gratis</span>
                 </div>
+
+                {/* Discount Code Section */}
+                <div className="border-t pt-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium flex items-center gap-2">
+                      <Tag className="h-4 w-4" />
+                      Kortingscode
+                    </label>
+                    {!appliedDiscount ? (
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="Voer code in"
+                          value={discountCode}
+                          onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+                          onKeyDown={(e) => e.key === 'Enter' && applyDiscountCode()}
+                        />
+                        <Button onClick={applyDiscountCode} size="sm">
+                          Toepassen
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                        <div>
+                          <p className="font-medium text-sm">{appliedDiscount.code}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {appliedDiscount.type === 'percentage' 
+                              ? `${appliedDiscount.value}% korting`
+                              : `€${appliedDiscount.value.toFixed(2)} korting`}
+                          </p>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={removeDiscount}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {appliedDiscount && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Korting:</span>
+                    <span>-€{appliedDiscount.amount.toFixed(2)}</span>
+                  </div>
+                )}
+
                 <div className="border-t pt-4">
                   <div className="flex justify-between font-bold text-lg">
                     <span>Totaal:</span>
-                    <span>€{total.toFixed(2)}</span>
+                    <span>€{finalTotal.toFixed(2)}</span>
                   </div>
                 </div>
                 
