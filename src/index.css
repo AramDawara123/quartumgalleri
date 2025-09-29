@@ -134,7 +134,14 @@ All colors MUST be HSL.
   }
 
   .artwork-overlay {
-    @apply absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-all duration-500;
+    @apply absolute inset-0 opacity-0 transition-all duration-500;
+    background: linear-gradient(
+      to top,
+      hsl(var(--luxury) / 0.95) 0%,
+      hsl(var(--luxury) / 0.6) 30%,
+      hsl(var(--luxury) / 0.3) 60%,
+      transparent 100%
+    );
   }
 
   .artwork-overlay:hover {
