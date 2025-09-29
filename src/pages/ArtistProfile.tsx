@@ -1,97 +1,121 @@
 import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { ArrowLeft, MapPin, Award, Eye, ShoppingBag, Calendar, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import artwork1 from "@/assets/artwork-1.jpg";
-import artwork2 from "@/assets/artwork-2.jpg";
-import artwork3 from "@/assets/artwork-3.jpg";
-import artwork4 from "@/assets/artwork-4.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/contexts/CartContext";
+
+interface Artist {
+  id: string;
+  name: string;
+  bio: string | null;
+  image_url: string | null;
+  website: string | null;
+  email: string | null;
+  created_at: string;
+}
+
+interface Artwork {
+  id: string;
+  title: string;
+  description: string | null;
+  price: number;
+  image_url: string | null;
+  category: string | null;
+  medium: string | null;
+  dimensions: string | null;
+  year_created: number | null;
+  available: boolean | null;
+  artist_id: string | null;
+}
 
 const ArtistProfile = () => {
   const { id } = useParams();
+  const { toast } = useToast();
+  const { addToCart } = useCart();
+  const [artist, setArtist] = useState<Artist | null>(null);
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Artist data (in a real app, this would come from an API)
-  const artists = {
-    "1": {
-      id: 1,
-      name: "Elena Marchetti",
-      specialization: "Contemporary Abstract",
-      location: "Milan, Italy",
-      bio: "Elena Marchetti is a contemporary abstract artist whose work explores the depths of human emotion through bold color palettes and dynamic compositions. Born in Milan, she has spent over fifteen years developing her unique style that combines traditional painting techniques with modern conceptual frameworks. Her signature use of burgundy and gold tones creates deeply emotional pieces that resonate with viewers on a visceral level.",
-      fullBio: "Elena's artistic journey began at the Brera Academy in Milan, where she studied under renowned abstract expressionist Marco Fontana. Her early work was heavily influenced by the Italian masters, but she gradually developed her own voice through experimentation with color theory and emotional expression. Her breakthrough came in 2018 with the 'Burgundy Dreams' series, which explored themes of passion, memory, and the subconscious mind. Since then, her work has been featured in major galleries across Europe and North America, earning critical acclaim for its emotional depth and technical mastery.",
-      achievements: [
-        "Venice Biennale 2022 - Represented Italy",
-        "Guggenheim Fellowship Recipient 2021",
-        "MoMA Permanent Collection",
-        "European Contemporary Art Prize 2020",
-        "Solo Exhibition at Palazzo Grassi, Venice"
-      ],
-      exhibitions: [
-        { year: "2024", title: "Emotional Landscapes", venue: "Tate Modern, London" },
-        { year: "2023", title: "Color and Memory", venue: "Centre Pompidou, Paris" },
-        { year: "2022", title: "Venice Biennale", venue: "Italian Pavilion" },
-        { year: "2021", title: "Abstract Realities", venue: "Guggenheim Museum, NYC" }
-      ],
-      yearsActive: "15+ years",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=600&h=600&fit=crop&crop=face",
-      website: "www.elenamarchetti.art",
-      social: {
-        instagram: "@elena.marchetti.art",
-        website: "www.elenamarchetti.art"
-      },
-      artworks: [
-        {
-          id: 1,
-          title: "Burgundy Dreams",
-          year: "2023",
-          medium: "Oil on Canvas",
-          dimensions: "36\" x 48\"",
-          price: "$3,200",
-          description: "A powerful exploration of subconscious desires rendered in rich burgundy tones with gold accents.",
-          image: artwork1,
-          available: true
-        },
-        {
-          id: 2,
-          title: "Golden Reverie",
-          year: "2023",
-          medium: "Acrylic and Gold Leaf",
-          dimensions: "30\" x 40\"",
-          price: "$2,800",
-          description: "An ethereal piece that captures the fleeting moments between dreams and reality.",
-          image: artwork2,
-          available: true
-        },
-        {
-          id: 3,
-          title: "Crimson Depths",
-          year: "2022",
-          medium: "Mixed Media on Canvas",
-          dimensions: "48\" x 60\"",
-          price: "$4,500",
-          description: "A monumental work exploring the depths of human emotion through layered textures and colors.",
-          image: artwork3,
-          available: false
-        },
-        {
-          id: 4,
-          title: "Twilight Embrace",
-          year: "2024",
-          medium: "Oil on Canvas",
-          dimensions: "24\" x 36\"",
-          price: "$2,400",
-          description: "A tender piece capturing the intimate moments of dusk with warm, embracing tones.",
-          image: artwork4,
-          available: true
-        }
-      ]
+  const loadArtist = async () => {
+    if (!id) return;
+    
+    try {
+      setLoading(true);
+      
+      // Fetch artist data
+      const { data: artistData, error: artistError } = await supabase
+        .from('artists')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (artistError) throw artistError;
+      
+      if (!artistData) {
+        setArtist(null);
+        setLoading(false);
+        return;
+      }
+
+      setArtist(artistData);
+
+      // Fetch artworks by this artist
+      const { data: artworksData, error: artworksError } = await supabase
+        .from('artworks')
+        .select('*')
+        .eq('artist_id', id);
+
+      if (artworksError) throw artworksError;
+      
+      setArtworks(artworksData || []);
+    } catch (error) {
+      console.error('Error loading artist:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load artist data. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
-    // Add other artists here...
   };
 
-  const artist = artists[id as keyof typeof artists];
+  const handleAddToCart = async (artwork: Artwork) => {
+    try {
+      await addToCart(artwork.id, artwork);
+      
+      toast({
+        title: "Added to Cart",
+        description: `${artwork.title} has been added to your cart.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add item to cart. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  useEffect(() => {
+    loadArtist();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading artist profile...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!artist) {
     return (
@@ -122,7 +146,7 @@ const ArtistProfile = () => {
           <div className="lg:col-span-1">
             <div className="relative aspect-square overflow-hidden rounded-lg">
               <img
-                src={artist.image}
+                src={artist.image_url || 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=600&h=600&fit=crop&crop=face'}
                 alt={artist.name}
                 className="w-full h-full object-cover"
               />
@@ -135,17 +159,12 @@ const ArtistProfile = () => {
                 <h1 className="text-4xl md:text-5xl font-serif font-bold mb-3 text-primary">
                   {artist.name}
                 </h1>
-                <p className="text-xl text-accent font-medium mb-2">
-                  {artist.specialization}
-                </p>
-                <div className="flex items-center text-muted-foreground mb-4">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {artist.location}
-                </div>
+                {artist.email && (
+                  <p className="text-lg text-accent font-medium mb-2">
+                    {artist.email}
+                  </p>
+                )}
               </div>
-              <Badge variant="secondary" className="bg-gallery-gold/20 text-gallery-gold">
-                {artist.yearsActive}
-              </Badge>
             </div>
 
             <p className="text-muted-foreground leading-relaxed mb-6">
@@ -153,20 +172,15 @@ const ArtistProfile = () => {
             </p>
 
             <div className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-primary mb-2">About the Artist</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {artist.fullBio}
-                </p>
-              </div>
-
               <div className="flex items-center space-x-4">
-                <Button variant="default" asChild>
-                  <a href={`https://${artist.website}`} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    Visit Website
-                  </a>
-                </Button>
+                {artist.website && (
+                  <Button variant="default" asChild>
+                    <a href={artist.website.startsWith('http') ? artist.website : `https://${artist.website}`} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      Visit Website
+                    </a>
+                  </Button>
+                )}
                 <Button variant="outline" asChild>
                   <Link to="/contact">
                     Commission Work
@@ -175,52 +189,6 @@ const ArtistProfile = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Achievements & Exhibitions */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          <Card className="p-6">
-            <div className="flex items-center mb-4">
-              <Award className="h-5 w-5 text-gallery-gold mr-2" />
-              <h3 className="text-xl font-serif font-semibold text-primary">
-                Achievements
-              </h3>
-            </div>
-            <div className="space-y-2">
-              {artist.achievements.map((achievement, index) => (
-                <div key={index} className="flex items-start">
-                  <div className="w-2 h-2 bg-accent rounded-full mt-2 mr-3 flex-shrink-0" />
-                  <p className="text-muted-foreground text-sm">{achievement}</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center mb-4">
-              <Calendar className="h-5 w-5 text-primary mr-2" />
-              <h3 className="text-xl font-serif font-semibold text-primary">
-                Recent Exhibitions
-              </h3>
-            </div>
-            <div className="space-y-3">
-              {artist.exhibitions.map((exhibition, index) => (
-                <div key={index} className="border-l-2 border-accent/30 pl-4">
-                  <div className="flex items-center space-x-2 mb-1">
-                    <Badge variant="outline" className="text-xs">
-                      {exhibition.year}
-                    </Badge>
-                    <h4 className="font-medium text-primary text-sm">
-                      {exhibition.title}
-                    </h4>
-                  </div>
-                  <p className="text-muted-foreground text-xs">
-                    {exhibition.venue}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Card>
         </div>
 
         <Separator className="mb-16" />
@@ -232,12 +200,17 @@ const ArtistProfile = () => {
               Available Artworks
             </h2>
             <p className="text-muted-foreground">
-              {artist.artworks.filter(art => art.available).length} of {artist.artworks.length} available
+              {artworks.filter(art => art.available).length} of {artworks.length} available
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artist.artworks.map((artwork, index) => (
+          {artworks.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No artworks available for this artist yet.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {artworks.map((artwork, index) => (
               <Card
                 key={artwork.id}
                 className={`group gallery-hover overflow-hidden border-0 shadow-lg ${
@@ -248,7 +221,7 @@ const ArtistProfile = () => {
                 <CardContent className="p-0">
                   <div className="relative aspect-[4/5] overflow-hidden">
                     <img
-                      src={artwork.image}
+                      src={artwork.image_url || 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=400&h=500&fit=crop'}
                       alt={artwork.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
@@ -259,40 +232,40 @@ const ArtistProfile = () => {
                         </Badge>
                       </div>
                     )}
-                    {artwork.available && (
-                      <div className="artwork-overlay group-hover:opacity-100 flex items-end">
-                        <div className="p-6 text-white">
-                          <Button variant="hero" size="sm">
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Details
-                          </Button>
-                        </div>
-                      </div>
-                    )}
                   </div>
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-2">
                       <h3 className="font-serif text-lg font-semibold text-primary">
                         {artwork.title}
                       </h3>
-                      <Badge variant="outline" className="text-xs">
-                        {artwork.year}
-                      </Badge>
+                      {artwork.year_created && (
+                        <Badge variant="outline" className="text-xs">
+                          {artwork.year_created}
+                        </Badge>
+                      )}
                     </div>
-                    <p className="text-muted-foreground text-sm mb-2">
-                      {artwork.medium} • {artwork.dimensions}
-                    </p>
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                      {artwork.description}
-                    </p>
+                    {(artwork.medium || artwork.dimensions) && (
+                      <p className="text-muted-foreground text-sm mb-2">
+                        {artwork.medium}{artwork.medium && artwork.dimensions ? ' • ' : ''}{artwork.dimensions}
+                      </p>
+                    )}
+                    {artwork.description && (
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                        {artwork.description}
+                      </p>
+                    )}
                     <div className="flex items-center justify-between">
                       <span className="text-xl font-bold text-accent">
-                        {artwork.price}
+                        €{artwork.price}
                       </span>
                       {artwork.available ? (
-                        <Button variant="luxury" size="sm">
+                        <Button 
+                          variant="default" 
+                          size="sm"
+                          onClick={() => handleAddToCart(artwork)}
+                        >
                           <ShoppingBag className="mr-2 h-4 w-4" />
-                          Purchase
+                          Add to Cart
                         </Button>
                       ) : (
                         <Button variant="outline" size="sm" disabled>
@@ -303,8 +276,9 @@ const ArtistProfile = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Contact Artist */}
@@ -323,11 +297,13 @@ const ArtistProfile = () => {
                   Contact Gallery
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <a href={`https://${artist.website}`} target="_blank" rel="noopener noreferrer">
-                  Visit Artist Website
-                </a>
-              </Button>
+              {artist.website && (
+                <Button variant="outline" size="lg" asChild>
+                  <a href={artist.website.startsWith('http') ? artist.website : `https://${artist.website}`} target="_blank" rel="noopener noreferrer">
+                    Visit Artist Website
+                  </a>
+                </Button>
+              )}
             </div>
           </Card>
         </section>
