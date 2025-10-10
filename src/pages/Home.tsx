@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { ArrowRight, Calendar, Eye, ShoppingBag, Palette, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,61 +9,65 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { format } from "date-fns";
 import galleryHero from "@/assets/gallery-hero.jpg";
-import artwork1 from "@/assets/artwork-1.jpg";
-import artwork2 from "@/assets/artwork-2.jpg";
-import artwork3 from "@/assets/artwork-3.jpg";
-import artwork4 from "@/assets/artwork-4.jpg";
 
 const Home = () => {
-  const featuredArtworks = [
-    {
-      id: 1,
-      title: "Burgundy Dreams",
-      artist: "Elena Marchetti",
-      price: "$3,200",
-      image: artwork1,
-    },
-    {
-      id: 2,
-      title: "Geometric Serenity",
-      artist: "David Chen",
-      price: "$2,800",
-      image: artwork2,
-    },
-    {
-      id: 3,
-      title: "Vivid Landscapes",
-      artist: "Maria Rodriguez",
-      price: "$4,100",
-      image: artwork3,
-    },
-    {
-      id: 4,
-      title: "Portrait in Motion",
-      artist: "James Thompson",
-      price: "$3,500",
-      image: artwork4,
-    },
-  ];
+  const { toast } = useToast();
+  const [featuredArtworks, setFeaturedArtworks] = useState<any[]>([]);
+  const [featuredArtists, setFeaturedArtists] = useState<any[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const upcomingEvents = [
-    {
-      date: "March 15, 2024",
-      title: "Contemporary Visions Exhibition",
-      description: "Featuring works by emerging contemporary artists",
-    },
-    {
-      date: "March 22, 2024",
-      title: "Artist Workshop: Abstract Techniques",
-      description: "Learn advanced abstract painting methods",
-    },
-    {
-      date: "April 5, 2024",
-      title: "Gallery Night Opening",
-      description: "Exclusive preview of new acquisitions",
-    },
-  ];
+  useEffect(() => {
+    loadHomeData();
+  }, []);
+
+  const loadHomeData = async () => {
+    setLoading(true);
+
+    // Load featured artworks
+    const { data: artworks } = await supabase
+      .from('artworks')
+      .select(`
+        *,
+        artists (name)
+      `)
+      .eq('available', true)
+      .order('created_at', { ascending: false })
+      .limit(4);
+
+    if (artworks) {
+      setFeaturedArtworks(artworks);
+    }
+
+    // Load featured artists
+    const { data: artists } = await supabase
+      .from('artists')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(3);
+
+    if (artists) {
+      setFeaturedArtists(artists);
+    }
+
+    // Load upcoming events
+    const { data: events } = await supabase
+      .from('events')
+      .select('*')
+      .gte('event_date', new Date().toISOString())
+      .order('event_date')
+      .limit(3);
+
+    if (events) {
+      setUpcomingEvents(events);
+    }
+
+    setLoading(false);
+  };
 
   const faqs = [
     {
@@ -91,35 +96,6 @@ const Home = () => {
     }
   ];
 
-  const featuredArtists = [
-    {
-      id: 1,
-      name: "Elena Marchetti",
-      specialty: "Contemporary Abstract",
-      bio: "Master of bold colors and emotional depth",
-      artworks: 24,
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
-      featured: true
-    },
-    {
-      id: 2,
-      name: "David Chen",
-      specialty: "Geometric Art",
-      bio: "Precision meets creativity in stunning compositions",
-      artworks: 18,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-      featured: true
-    },
-    {
-      id: 3,
-      name: "Maria Rodriguez",
-      specialty: "Landscape Painting",
-      bio: "Capturing nature's essence through vivid brushstrokes",
-      artworks: 32,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-      featured: true
-    }
-  ];
 
   return (
     <main className="min-h-screen">
@@ -169,51 +145,67 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {featuredArtworks.map((artwork, index) => (
-              <Card
-                key={artwork.id}
-                className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300"
-                style={{ 
-                  animation: 'fade-in 0.5s ease-out',
-                  animationDelay: `${index * 0.1}s`,
-                  animationFillMode: 'both'
-                }}
-              >
-                <CardContent className="p-0">
-                  <div className="relative aspect-[3/4] overflow-hidden">
-                    <img
-                      src={artwork.image}
-                      alt={artwork.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                      <Button variant="hero" size="sm" className="backdrop-blur-sm" asChild>
-                        <Link to="/artworks" className="inline-flex items-center">
-                          <Eye className="mr-2 h-4 w-4" />
-                          View Details
-                        </Link>
-                      </Button>
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {[...Array(4)].map((_, i) => (
+                <Card key={i} className="overflow-hidden border-0 shadow-md">
+                  <CardContent className="p-0">
+                    <div className="aspect-[3/4] bg-muted animate-pulse" />
+                    <div className="p-6 space-y-3">
+                      <div className="h-6 bg-muted animate-pulse rounded" />
+                      <div className="h-4 bg-muted animate-pulse rounded w-2/3" />
                     </div>
-                  </div>
-                  <div className="p-4 md:p-6 bg-card">
-                    <h3 className="font-serif text-lg md:text-xl font-semibold mb-1 text-primary line-clamp-1">
-                      {artwork.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-3">by {artwork.artist}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xl md:text-2xl font-bold text-accent">
-                        {artwork.price}
-                      </span>
-                      <Button variant="luxury" size="sm">
-                        <ShoppingBag className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {featuredArtworks.map((artwork, index) => (
+                <Card
+                  key={artwork.id}
+                  className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300"
+                  style={{ 
+                    animation: 'fade-in 0.5s ease-out',
+                    animationDelay: `${index * 0.1}s`,
+                    animationFillMode: 'both'
+                  }}
+                >
+                  <Link to={`/artworks/${artwork.id}`}>
+                    <CardContent className="p-0">
+                      <div className="relative aspect-[3/4] overflow-hidden">
+                        <img
+                          src={artwork.image_url || '/placeholder.svg'}
+                          alt={artwork.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                          <Button variant="hero" size="sm" className="backdrop-blur-sm">
+                            <Eye className="mr-2 h-4 w-4" />
+                            View Details
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="p-4 md:p-6 bg-card">
+                        <h3 className="font-serif text-lg md:text-xl font-semibold mb-1 text-primary line-clamp-1">
+                          {artwork.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-3">by {artwork.artists?.name || 'Unknown'}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xl md:text-2xl font-bold text-accent">
+                            €{artwork.price.toLocaleString()}
+                          </span>
+                          <Button variant="luxury" size="sm">
+                            <ShoppingBag className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          )}
 
           <div className="text-center mt-10 md:mt-12">
             <Button variant="default" size="lg" asChild>
@@ -238,72 +230,75 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {featuredArtists.map((artist, index) => (
-              <Card
-                key={artist.id}
-                className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-card"
-                style={{ 
-                  animation: 'fade-in 0.5s ease-out',
-                  animationDelay: `${index * 0.1}s`,
-                  animationFillMode: 'both'
-                }}
-              >
-                <CardContent className="p-0">
-                  <div className="relative">
-                    <div className="aspect-square overflow-hidden">
-                      <img
-                        src={artist.image}
-                        alt={artist.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {[...Array(3)].map((_, i) => (
+                <Card key={i} className="overflow-hidden border-0 shadow-md">
+                  <CardContent className="p-0">
+                    <div className="aspect-square bg-muted animate-pulse" />
+                    <div className="p-6 space-y-3">
+                      <div className="h-6 bg-muted animate-pulse rounded" />
+                      <div className="h-4 bg-muted animate-pulse rounded w-2/3" />
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <Button variant="hero" size="sm" className="backdrop-blur-sm" asChild>
-                        <Link to={`/artists/${artist.id}`} className="inline-flex items-center">
-                          <Eye className="mr-2 h-4 w-4" />
-                          View Profile
-                        </Link>
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="p-4 md:p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-serif text-lg md:text-xl font-semibold text-primary line-clamp-1">
-                        {artist.name}
-                      </h3>
-                      <Award className="h-5 w-5 text-gallery-gold flex-shrink-0" />
-                    </div>
-                    
-                    <div className="flex items-center mb-3">
-                      <Palette className="h-4 w-4 text-accent mr-2 flex-shrink-0" />
-                      <span className="text-sm font-medium text-accent line-clamp-1">
-                        {artist.specialty}
-                      </span>
-                    </div>
-                    
-                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-2">
-                      {artist.bio}
-                    </p>
-                    
-                    <div className="flex items-center justify-between pt-4 border-t border-border/30">
-                      <div className="text-center">
-                        <div className="text-xl md:text-2xl font-bold text-accent">{artist.artworks}</div>
-                        <div className="text-xs text-muted-foreground">Artworks</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {featuredArtists.map((artist, index) => (
+                <Card
+                  key={artist.id}
+                  className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-card"
+                  style={{ 
+                    animation: 'fade-in 0.5s ease-out',
+                    animationDelay: `${index * 0.1}s`,
+                    animationFillMode: 'both'
+                  }}
+                >
+                  <CardContent className="p-0">
+                    <div className="relative">
+                      <div className="aspect-square overflow-hidden">
+                        <img
+                          src={artist.image_url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop'}
+                          alt={artist.name}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
                       </div>
-                      <Button variant="elegant" size="sm" asChild>
-                        <Link to={`/artists/${artist.id}`} className="inline-flex items-center">
-                          View Works
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <Button variant="hero" size="sm" className="backdrop-blur-sm" asChild>
+                          <Link to={`/artists/${artist.id}`} className="inline-flex items-center">
+                            <Eye className="mr-2 h-4 w-4" />
+                            View Profile
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 md:p-6">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-serif text-lg md:text-xl font-semibold text-primary line-clamp-1">
+                          {artist.name}
+                        </h3>
+                        <Award className="h-5 w-5 text-gallery-gold flex-shrink-0" />
+                      </div>
+                      
+                      <p className="text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-3">
+                        {artist.bio || 'Talented contemporary artist'}
+                      </p>
+                      
+                      <Button variant="elegant" size="sm" asChild className="w-full">
+                        <Link to={`/artists/${artist.id}`} className="inline-flex items-center justify-center">
+                          View Profile
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
           <div className="text-center mt-10 md:mt-12">
             <Button variant="default" size="lg" asChild>
@@ -328,34 +323,52 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {upcomingEvents.map((event, index) => (
-              <Card
-                key={index}
-                className="border border-border/50 hover:border-accent/50 hover:shadow-lg transition-all duration-300"
-                style={{ 
-                  animation: 'fade-in 0.5s ease-out',
-                  animationDelay: `${index * 0.1}s`,
-                  animationFillMode: 'both'
-                }}
-              >
-                <CardContent className="p-6 md:p-8">
-                  <div className="text-sm font-medium text-accent mb-3">
-                    {event.date}
-                  </div>
-                  <h3 className="font-serif text-lg md:text-xl font-semibold mb-3 text-primary line-clamp-2">
-                    {event.title}
-                  </h3>
-                  <p className="text-sm md:text-base text-muted-foreground mb-6 leading-relaxed line-clamp-3">
-                    {event.description}
-                  </p>
-                  <Button variant="elegant" className="w-full">
-                    Learn More
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {[...Array(3)].map((_, i) => (
+                <Card key={i} className="border border-border/50">
+                  <CardContent className="p-6 md:p-8 space-y-3">
+                    <div className="h-4 bg-muted animate-pulse rounded w-1/3" />
+                    <div className="h-6 bg-muted animate-pulse rounded w-3/4" />
+                    <div className="h-16 bg-muted animate-pulse rounded" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : upcomingEvents.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {upcomingEvents.map((event, index) => (
+                <Card
+                  key={event.id}
+                  className="border border-border/50 hover:border-accent/50 hover:shadow-lg transition-all duration-300"
+                  style={{ 
+                    animation: 'fade-in 0.5s ease-out',
+                    animationDelay: `${index * 0.1}s`,
+                    animationFillMode: 'both'
+                  }}
+                >
+                  <CardContent className="p-6 md:p-8">
+                    <div className="text-sm font-medium text-accent mb-3">
+                      {format(new Date(event.event_date), 'MMMM dd, yyyy')}
+                    </div>
+                    <h3 className="font-serif text-lg md:text-xl font-semibold mb-3 text-primary line-clamp-2">
+                      {event.title}
+                    </h3>
+                    <p className="text-sm md:text-base text-muted-foreground mb-6 leading-relaxed line-clamp-3">
+                      {event.description}
+                    </p>
+                    <Button variant="elegant" className="w-full" asChild>
+                      <Link to="/events">Learn More</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No upcoming events at the moment</p>
+            </div>
+          )}
 
           <div className="text-center mt-10 md:mt-12">
             <Button variant="default" size="lg" asChild>

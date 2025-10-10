@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -217,18 +218,28 @@ const Artworks = () => {
                         </Button>
                       </div>
                       <div className="absolute bottom-4 left-4 right-4 flex gap-2">
-                        <Button variant="hero" size="sm" className="flex-1">
-                          <Eye className="mr-2 h-4 w-4" />
-                          Quick View
+                        <Button 
+                          variant="hero" 
+                          size="sm" 
+                          className="flex-1"
+                          asChild
+                        >
+                          <Link to={`/artworks/${artwork.id}`}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            View Details
+                          </Link>
                         </Button>
                         <Button 
                           variant="luxury" 
                           size="sm" 
                           className="flex-1"
-                          onClick={() => addToCart(artwork.id, artwork)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            addToCart(artwork.id, artwork);
+                          }}
                         >
                           <ShoppingBag className="mr-2 h-4 w-4" />
-                          Add to Cart
+                          Add
                         </Button>
                       </div>
                     </div>

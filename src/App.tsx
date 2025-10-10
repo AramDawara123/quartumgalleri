@@ -15,6 +15,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import Cart from "./pages/Cart";
+import ArtworkDetail from "./pages/ArtworkDetail";
+import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -34,6 +36,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/artworks" element={<Artworks />} />
+                <Route path="/artworks/:id" element={<ArtworkDetail />} />
                 <Route path="/artists" element={<Artists />} />
                 <Route path="/artists/:id" element={<ArtistProfile />} />
                 <Route path="/events" element={<Events />} />
@@ -41,6 +44,7 @@ const App = () => (
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

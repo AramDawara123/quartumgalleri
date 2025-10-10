@@ -16,84 +16,84 @@ const Dashboard = () => {
     switch (activeSection) {
       case 'artworks':
         return (
-          <Card>
-            <CardHeader>
-              <CardTitle>Manage All Artworks</CardTitle>
-              <CardDescription>
-                Overview of all artworks in the gallery
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="border-b bg-gradient-to-r from-primary/5 to-accent/5">
+              <CardTitle className="text-2xl font-serif">Alle Kunstwerken Beheren</CardTitle>
+              <CardDescription className="text-base">
+                Overzicht van alle kunstwerken in de galerie
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
               <ArtworksManager />
             </CardContent>
           </Card>
         );
       case 'artist-artworks':
         return (
-          <Card>
-            <CardHeader>
-              <CardTitle>Artworks by Artist</CardTitle>
-              <CardDescription>
-                Manage artworks by specific artists
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="border-b bg-gradient-to-r from-primary/5 to-accent/5">
+              <CardTitle className="text-2xl font-serif">Kunstwerken per Kunstenaar</CardTitle>
+              <CardDescription className="text-base">
+                Beheer kunstwerken van specifieke kunstenaars
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
               <ArtistArtworksManager />
             </CardContent>
           </Card>
         );
       case 'artists':
         return (
-          <Card>
-            <CardHeader>
-              <CardTitle>Manage Artists</CardTitle>
-              <CardDescription>
-                Manage the artists in your gallery
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="border-b bg-gradient-to-r from-primary/5 to-accent/5">
+              <CardTitle className="text-2xl font-serif">Kunstenaars Beheren</CardTitle>
+              <CardDescription className="text-base">
+                Beheer de kunstenaars in uw galerie
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
               <ArtistsManager />
             </CardContent>
           </Card>
         );
       case 'events':
         return (
-          <Card>
-            <CardHeader>
-              <CardTitle>Manage Events</CardTitle>
-              <CardDescription>
-                Organize and manage gallery events
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="border-b bg-gradient-to-r from-primary/5 to-accent/5">
+              <CardTitle className="text-2xl font-serif">Evenementen Beheren</CardTitle>
+              <CardDescription className="text-base">
+                Organiseer en beheer galerie evenementen
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
               <EventsManager />
             </CardContent>
           </Card>
         );
       case 'incoming':
         return (
-          <Card>
-            <CardHeader>
-              <CardTitle>Incoming Orders</CardTitle>
-              <CardDescription>
-                Manage expected artworks and deliveries
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="border-b bg-gradient-to-r from-primary/5 to-accent/5">
+              <CardTitle className="text-2xl font-serif">Inkomende Bestellingen</CardTitle>
+              <CardDescription className="text-base">
+                Beheer verwachte kunstwerken en leveringen
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
               <IncomingOrdersManager />
             </CardContent>
           </Card>
         );
       case 'discounts':
         return (
-          <Card>
-            <CardHeader>
-              <CardTitle>Manage Discounts</CardTitle>
-              <CardDescription>
-                Create and manage discount codes for artworks and events
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="border-b bg-gradient-to-r from-primary/5 to-accent/5">
+              <CardTitle className="text-2xl font-serif">Kortingen Beheren</CardTitle>
+              <CardDescription className="text-base">
+                Maak en beheer kortingscodes voor kunstwerken en evenementen
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
               <DiscountsManager />
             </CardContent>
           </Card>
@@ -105,20 +105,24 @@ const Dashboard = () => {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen w-full bg-muted/30">
         <AppSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
         <SidebarInset className="flex-1">
-          <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-6">
+          <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 shadow-sm">
             <SidebarTrigger />
-            <div>
-              <h1 className="text-2xl font-bold">Dashboard</h1>
-              <p className="text-sm text-muted-foreground">
-                Manage your artworks, artists and events
-              </p>
+            <div className="flex items-center justify-between w-full">
+              <div>
+                <h1 className="text-2xl font-bold font-serif text-primary">Dashboard</h1>
+                <p className="text-sm text-muted-foreground">
+                  Beheer uw kunstwerken, kunstenaars en evenementen
+                </p>
+              </div>
             </div>
           </header>
-          <main className="p-6">
-            {renderContent()}
+          <main className="p-4 md:p-6 lg:p-8">
+            <div className="max-w-7xl mx-auto">
+              {renderContent()}
+            </div>
           </main>
         </SidebarInset>
       </div>

@@ -271,8 +271,8 @@ const Cart = () => {
                 </div>
                 
                 <div className="space-y-2 pt-4">
-                  <Button className="w-full" size="lg">
-                    Afrekenen
+                  <Button className="w-full" size="lg" asChild>
+                    <Link to="/checkout">Afrekenen</Link>
                   </Button>
                   <Button
                     variant="outline"
