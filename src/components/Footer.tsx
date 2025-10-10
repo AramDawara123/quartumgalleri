@@ -2,10 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Twitter, Linkedin } from "lucide-react";
-
 const Footer = () => {
-  return (
-    <footer className="bg-card border-t border-border mt-20">
+  return <footer className="bg-card border-t border-border mt-20">
       <div className="container mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Gallery Info */}
@@ -90,11 +88,7 @@ const Footer = () => {
               Subscribe to receive updates about new exhibitions, featured artists, and exclusive events.
             </p>
             <div className="space-y-2">
-              <Input 
-                type="email" 
-                placeholder="Enter your email"
-                className="bg-background border-border"
-              />
+              <Input type="email" placeholder="Enter your email" className="bg-background border-border" />
               <Button variant="default" className="w-full">
                 Subscribe
               </Button>
@@ -109,9 +103,7 @@ const Footer = () => {
         
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <div className="text-sm text-muted-foreground">
-            © 2024 Artisan Gallery. All rights reserved.
-          </div>
+          <div className="text-sm text-muted-foreground">© 2025 Artisan Gallery. All rights reserved.</div>
           <div className="flex space-x-6 text-sm">
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
               Privacy Policy
@@ -125,8 +117,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
