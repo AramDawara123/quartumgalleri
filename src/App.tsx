@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import AdminLogin from "./pages/AdminLogin";
+import CreateAdmin from "./pages/CreateAdmin";
 import Cart from "./pages/Cart";
 import ArtworkDetail from "./pages/ArtworkDetail";
 import Checkout from "./pages/Checkout";
@@ -43,6 +44,7 @@ const App = () => (
                 <Route path="/events" element={<Events />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/create-admin" element={<CreateAdmin />} />
                 <Route path="/admin-login" element={<AdminLogin />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/cart" element={<Cart />} />
