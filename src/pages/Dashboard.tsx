@@ -6,6 +6,7 @@ import { ArtistArtworksManager } from '@/components/dashboard/ArtistArtworksMana
 import { EventsManager } from '@/components/dashboard/EventsManager';
 import { IncomingOrdersManager } from '@/components/dashboard/IncomingOrdersManager';
 import { DiscountsManager } from '@/components/dashboard/DiscountsManager';
+import { PageContentManager } from '@/components/dashboard/PageContentManager';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 
@@ -95,6 +96,20 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent className="p-3 sm:p-4 md:p-6">
               <DiscountsManager />
+            </CardContent>
+          </Card>
+        );
+      case 'page-content':
+        return (
+          <Card className="border-0 shadow-xl card-glow overflow-hidden">
+            <CardHeader className="border-b bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 p-4 sm:p-6 backdrop-blur-sm">
+              <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-serif">About Us Pagina Beheren</CardTitle>
+              <CardDescription className="text-sm sm:text-base mt-1">
+                Bewerk de inhoud van de About Us pagina
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-3 sm:p-4 md:p-6">
+              <PageContentManager />
             </CardContent>
           </Card>
         );
