@@ -3,122 +3,94 @@ import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Calendar, Eye, ShoppingBag, Palette, Award, Shield, Truck, Heart, Users, Star, TrendingUp, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import galleryHero from "@/assets/gallery-hero.jpg";
-
 const Home = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [featuredArtworks, setFeaturedArtworks] = useState<any[]>([]);
   const [featuredArtists, setFeaturedArtists] = useState<any[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
   const [scrollY, setScrollY] = useState(0);
-
   useEffect(() => {
     loadHomeData();
   }, []);
-
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, {
+      passive: true
+    });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const loadHomeData = async () => {
     setLoading(true);
 
     // Load featured artworks
-    const { data: artworks } = await supabase
-      .from('artworks')
-      .select(`
+    const {
+      data: artworks
+    } = await supabase.from('artworks').select(`
         *,
         artists (name)
-      `)
-      .eq('available', true)
-      .order('created_at', { ascending: false })
-      .limit(4);
-
+      `).eq('available', true).order('created_at', {
+      ascending: false
+    }).limit(4);
     if (artworks) {
       setFeaturedArtworks(artworks);
     }
 
     // Load featured artists
-    const { data: artists } = await supabase
-      .from('artists')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(3);
-
+    const {
+      data: artists
+    } = await supabase.from('artists').select('*').order('created_at', {
+      ascending: false
+    }).limit(3);
     if (artists) {
       setFeaturedArtists(artists);
     }
 
     // Load upcoming events
-    const { data: events } = await supabase
-      .from('events')
-      .select('*')
-      .gte('event_date', new Date().toISOString())
-      .order('event_date')
-      .limit(3);
-
+    const {
+      data: events
+    } = await supabase.from('events').select('*').gte('event_date', new Date().toISOString()).order('event_date').limit(3);
     if (events) {
       setUpcomingEvents(events);
     }
-
     setLoading(false);
   };
-
-  const faqs = [
-    {
-      question: "What are your shipping options?",
-      answer: "We offer worldwide shipping for all artworks. Standard shipping takes 5-7 business days, while express shipping delivers within 2-3 business days. All artworks are professionally packaged and fully insured during transit."
-    },
-    {
-      question: "Do you offer international shipping?",
-      answer: "Yes, we ship to over 100 countries worldwide. International shipping typically takes 7-14 business days depending on your location. All customs fees and import duties are the responsibility of the buyer."
-    },
-    {
-      question: "What is your return policy?",
-      answer: "We offer a 14-day return policy for all artworks. If you're not completely satisfied with your purchase, you can return it for a full refund. The artwork must be in its original condition and packaging. Return shipping costs are covered by the buyer."
-    },
-    {
-      question: "Are the artworks authentic and original?",
-      answer: "Absolutely. All artworks in our gallery are 100% original pieces created by the listed artists. Each artwork comes with a certificate of authenticity signed by the artist and our gallery director."
-    },
-    {
-      question: "Can I view the artwork before purchasing?",
-      answer: "Yes! We encourage you to visit our gallery in person to view artworks. You can also request additional high-resolution images or schedule a virtual viewing appointment with one of our art consultants."
-    },
-    {
-      question: "Do you offer framing services?",
-      answer: "We offer professional framing services for all artworks. Our expert framers can help you select the perfect frame to complement your piece. Custom framing typically adds 5-7 business days to your delivery time."
-    }
-  ];
-
-
-  return (
-    <main className="min-h-screen">
+  const faqs = [{
+    question: "What are your shipping options?",
+    answer: "We offer worldwide shipping for all artworks. Standard shipping takes 5-7 business days, while express shipping delivers within 2-3 business days. All artworks are professionally packaged and fully insured during transit."
+  }, {
+    question: "Do you offer international shipping?",
+    answer: "Yes, we ship to over 100 countries worldwide. International shipping typically takes 7-14 business days depending on your location. All customs fees and import duties are the responsibility of the buyer."
+  }, {
+    question: "What is your return policy?",
+    answer: "We offer a 14-day return policy for all artworks. If you're not completely satisfied with your purchase, you can return it for a full refund. The artwork must be in its original condition and packaging. Return shipping costs are covered by the buyer."
+  }, {
+    question: "Are the artworks authentic and original?",
+    answer: "Absolutely. All artworks in our gallery are 100% original pieces created by the listed artists. Each artwork comes with a certificate of authenticity signed by the artist and our gallery director."
+  }, {
+    question: "Can I view the artwork before purchasing?",
+    answer: "Yes! We encourage you to visit our gallery in person to view artworks. You can also request additional high-resolution images or schedule a virtual viewing appointment with one of our art consultants."
+  }, {
+    question: "Do you offer framing services?",
+    answer: "We offer professional framing services for all artworks. Our expert framers can help you select the perfect frame to complement your piece. Custom framing typically adds 5-7 business days to your delivery time."
+  }];
+  return <main className="min-h-screen">
       {/* Hero Section with Parallax */}
       <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat parallax-hero"
-          style={{ 
-            backgroundImage: `url(${galleryHero})`,
-            transform: `translateY(${scrollY * 0.5}px)`
-          }}
-        >
+        <div className="absolute inset-0 bg-cover bg-center bg-no-repeat parallax-hero" style={{
+        backgroundImage: `url(${galleryHero})`,
+        transform: `translateY(${scrollY * 0.5}px)`
+      }}>
           <div className="absolute inset-0 bg-gradient-to-b from-nordic-sunset-start/20 via-nordic-glacier/30 to-nordic-sunset-end/20" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
         </div>
@@ -128,7 +100,9 @@ const Home = () => {
             Where Art
             <span className="block text-nordic-gold mt-2 drop-shadow-[0_2px_10px_rgba(255,215,0,0.3)]">Comes Alive</span>
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl mb-10 font-light max-w-3xl mx-auto leading-relaxed text-nordic-white/90 text-reveal" style={{ animationDelay: '0.3s' }}>
+          <p className="text-lg sm:text-xl md:text-2xl mb-10 font-light max-w-3xl mx-auto leading-relaxed text-nordic-white/90 text-reveal" style={{
+          animationDelay: '0.3s'
+        }}>
             Discover extraordinary contemporary art and timeless masterpieces in our curated collection
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -160,10 +134,8 @@ const Home = () => {
             </p>
           </div>
 
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {[...Array(4)].map((_, i) => (
-                <Card key={i} className="overflow-hidden nordic-border nordic-shadow bg-white">
+          {loading ? <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {[...Array(4)].map((_, i) => <Card key={i} className="overflow-hidden nordic-border nordic-shadow bg-white">
                   <CardContent className="p-0">
                     <div className="aspect-[3/4] bg-nordic-grey animate-pulse" />
                     <div className="p-6 space-y-3">
@@ -171,29 +143,17 @@ const Home = () => {
                       <div className="h-4 bg-nordic-grey animate-pulse rounded w-2/3" />
                     </div>
                   </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {featuredArtworks.map((artwork, index) => (
-                <Card
-                  key={artwork.id}
-                  className="group overflow-hidden nordic-border nordic-shadow-hover bg-white"
-                  style={{ 
-                    animation: 'slide-up 0.6s ease-out',
-                    animationDelay: `${index * 0.15}s`,
-                    animationFillMode: 'both'
-                  }}
-                >
+                </Card>)}
+            </div> : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {featuredArtworks.map((artwork, index) => <Card key={artwork.id} className="group overflow-hidden nordic-border nordic-shadow-hover bg-white" style={{
+            animation: 'slide-up 0.6s ease-out',
+            animationDelay: `${index * 0.15}s`,
+            animationFillMode: 'both'
+          }}>
                   <Link to={`/artworks/${artwork.id}`}>
                     <CardContent className="p-0">
                       <div className="relative aspect-[3/4] overflow-hidden">
-                        <img
-                          src={artwork.image_url || '/placeholder.svg'}
-                          alt={artwork.title}
-                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                        />
+                        <img src={artwork.image_url || '/placeholder.svg'} alt={artwork.title} className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-nordic-charcoal/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
                           <Button variant="hero" size="sm" className="backdrop-blur-sm">
                             <Eye className="mr-2 h-4 w-4" />
@@ -217,10 +177,8 @@ const Home = () => {
                       </div>
                     </CardContent>
                   </Link>
-                </Card>
-              ))}
-            </div>
-          )}
+                </Card>)}
+            </div>}
 
           <div className="text-center mt-10 md:mt-12">
             <Button variant="default" size="lg" asChild>
@@ -245,10 +203,8 @@ const Home = () => {
             </p>
           </div>
 
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-              {[...Array(3)].map((_, i) => (
-                <Card key={i} className="overflow-hidden nordic-border nordic-shadow bg-white">
+          {loading ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+              {[...Array(3)].map((_, i) => <Card key={i} className="overflow-hidden nordic-border nordic-shadow bg-white">
                   <CardContent className="p-0">
                     <div className="aspect-square bg-nordic-grey animate-pulse" />
                     <div className="p-6 space-y-3">
@@ -256,29 +212,17 @@ const Home = () => {
                       <div className="h-4 bg-nordic-grey animate-pulse rounded w-2/3" />
                     </div>
                   </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-              {featuredArtists.map((artist, index) => (
-                <Card
-                  key={artist.id}
-                  className="group overflow-hidden nordic-border nordic-shadow-hover bg-white"
-                  style={{ 
-                    animation: 'slide-up 0.6s ease-out',
-                    animationDelay: `${index * 0.15}s`,
-                    animationFillMode: 'both'
-                  }}
-                >
+                </Card>)}
+            </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+              {featuredArtists.map((artist, index) => <Card key={artist.id} className="group overflow-hidden nordic-border nordic-shadow-hover bg-white" style={{
+            animation: 'slide-up 0.6s ease-out',
+            animationDelay: `${index * 0.15}s`,
+            animationFillMode: 'both'
+          }}>
                   <CardContent className="p-0">
                     <div className="relative">
                       <div className="aspect-square overflow-hidden">
-                        <img
-                          src={artist.image_url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop'}
-                          alt={artist.name}
-                          className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
-                        />
+                        <img src={artist.image_url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop'} alt={artist.name} className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110" />
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-nordic-charcoal/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
                         <Button variant="hero" size="sm" className="backdrop-blur-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500" asChild>
@@ -310,10 +254,8 @@ const Home = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+                </Card>)}
+            </div>}
 
           <div className="text-center mt-10 md:mt-12">
             <Button variant="default" size="lg" asChild>
@@ -339,31 +281,21 @@ const Home = () => {
             </p>
           </div>
 
-          {loading ? (
-            <div className="space-y-6 max-w-3xl mx-auto">
-              {[...Array(3)].map((_, i) => (
-                <Card key={i} className="nordic-border nordic-shadow bg-white">
+          {loading ? <div className="space-y-6 max-w-3xl mx-auto">
+              {[...Array(3)].map((_, i) => <Card key={i} className="nordic-border nordic-shadow bg-white">
                   <CardContent className="p-6 md:p-8 space-y-3">
                     <div className="h-4 bg-nordic-grey animate-pulse rounded w-1/3" />
                     <div className="h-6 bg-nordic-grey animate-pulse rounded w-3/4" />
                     <div className="h-16 bg-nordic-grey animate-pulse rounded" />
                   </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : upcomingEvents.length > 0 ? (
-            <div className="space-y-6 max-w-3xl mx-auto relative">
+                </Card>)}
+            </div> : upcomingEvents.length > 0 ? <div className="space-y-6 max-w-3xl mx-auto relative">
               <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-nordic-glacier via-nordic-ice to-transparent hidden md:block"></div>
-              {upcomingEvents.map((event, index) => (
-                <Card
-                  key={event.id}
-                  className="relative nordic-border nordic-shadow-hover bg-white ml-0 md:ml-16"
-                  style={{ 
-                    animation: 'slide-up 0.6s ease-out',
-                    animationDelay: `${index * 0.15}s`,
-                    animationFillMode: 'both'
-                  }}
-                >
+              {upcomingEvents.map((event, index) => <Card key={event.id} className="relative nordic-border nordic-shadow-hover bg-white ml-0 md:ml-16" style={{
+            animation: 'slide-up 0.6s ease-out',
+            animationDelay: `${index * 0.15}s`,
+            animationFillMode: 'both'
+          }}>
                   <div className="absolute -left-16 top-8 hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-nordic-glacier border-4 border-white shadow-lg">
                     <Calendar className="h-5 w-5 text-nordic-charcoal" />
                   </div>
@@ -381,14 +313,10 @@ const Home = () => {
                       <Link to="/events">Learn More</Link>
                     </Button>
                   </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
+                </Card>)}
+            </div> : <div className="text-center py-12">
               <p className="text-muted-foreground">No upcoming events at the moment</p>
-            </div>
-          )}
+            </div>}
 
           <div className="text-center mt-10 md:mt-12">
             <Button variant="default" size="lg" asChild>
@@ -414,37 +342,27 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Shield,
-                title: "Authenticity Guaranteed",
-                description: "Every artwork comes with a certificate of authenticity and our lifetime guarantee"
-              },
-              {
-                icon: Truck,
-                title: "Worldwide Shipping",
-                description: "Professional packaging and insured delivery to over 100 countries worldwide"
-              },
-              {
-                icon: Heart,
-                title: "Curated Selection",
-                description: "Handpicked artworks from established and emerging contemporary artists"
-              },
-              {
-                icon: Users,
-                title: "Expert Support",
-                description: "Our art consultants are here to help you find the perfect piece for your collection"
-              }
-            ].map((feature, index) => (
-              <Card
-                key={index}
-                className="text-center p-8 nordic-border nordic-shadow-hover bg-white group"
-                style={{ 
-                  animation: 'slide-up 0.6s ease-out',
-                  animationDelay: `${index * 0.1}s`,
-                  animationFillMode: 'both'
-                }}
-              >
+            {[{
+            icon: Shield,
+            title: "Authenticity Guaranteed",
+            description: "Every artwork comes with a certificate of authenticity and our lifetime guarantee"
+          }, {
+            icon: Truck,
+            title: "Worldwide Shipping",
+            description: "Professional packaging and insured delivery to over 100 countries worldwide"
+          }, {
+            icon: Heart,
+            title: "Curated Selection",
+            description: "Handpicked artworks from established and emerging contemporary artists"
+          }, {
+            icon: Users,
+            title: "Expert Support",
+            description: "Our art consultants are here to help you find the perfect piece for your collection"
+          }].map((feature, index) => <Card key={index} className="text-center p-8 nordic-border nordic-shadow-hover bg-white group" style={{
+            animation: 'slide-up 0.6s ease-out',
+            animationDelay: `${index * 0.1}s`,
+            animationFillMode: 'both'
+          }}>
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-nordic-glacier to-nordic-ice mb-6 group-hover:scale-110 transition-transform duration-300">
                   <feature.icon className="h-8 w-8 text-nordic-charcoal" />
                 </div>
@@ -454,8 +372,7 @@ const Home = () => {
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {feature.description}
                 </p>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -478,17 +395,25 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-            {[
-              { number: "500+", label: "Artworks", icon: Palette },
-              { number: "50+", label: "Featured Artists", icon: Users },
-              { number: "98%", label: "Customer Satisfaction", icon: Star },
-              { number: "20+", label: "Years Experience", icon: TrendingUp }
-            ].map((stat, index) => (
-              <div
-                key={index}
-                className="text-center slide-up-on-scroll"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
+            {[{
+            number: "500+",
+            label: "Artworks",
+            icon: Palette
+          }, {
+            number: "50+",
+            label: "Featured Artists",
+            icon: Users
+          }, {
+            number: "98%",
+            label: "Customer Satisfaction",
+            icon: Star
+          }, {
+            number: "20+",
+            label: "Years Experience",
+            icon: TrendingUp
+          }].map((stat, index) => <div key={index} className="text-center slide-up-on-scroll" style={{
+            animationDelay: `${index * 0.1}s`
+          }}>
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-nordic-gold/20 mb-4">
                   <stat.icon className="h-6 w-6 text-nordic-gold" />
                 </div>
@@ -498,113 +423,16 @@ const Home = () => {
                 <div className="text-sm md:text-base text-white/80 font-medium">
                   {stat.label}
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 md:py-24 px-4 bg-nordic-white">
-        <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-12 md:mb-16 slide-up-on-scroll">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4 text-nordic-charcoal">
-              What Our Collectors Say
-            </h2>
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hear from art lovers who have found their perfect pieces
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Sarah Mitchell",
-                role: "Art Collector",
-                content: "The quality and authenticity of the artworks is exceptional. The team helped me find the perfect piece for my living room. Highly recommend!",
-                rating: 5
-              },
-              {
-                name: "James Chen",
-                role: "Interior Designer",
-                content: "I've purchased multiple pieces for my clients. The curation is outstanding and the shipping process is seamless. A true professional gallery.",
-                rating: 5
-              },
-              {
-                name: "Emma Thompson",
-                role: "Private Collector",
-                content: "Discovering this gallery was a game-changer. The variety of contemporary artists and the expert guidance made my collecting journey enjoyable.",
-                rating: 5
-              }
-            ].map((testimonial, index) => (
-              <Card
-                key={index}
-                className="p-8 nordic-border nordic-shadow-hover bg-white"
-                style={{ 
-                  animation: 'slide-up 0.6s ease-out',
-                  animationDelay: `${index * 0.15}s`,
-                  animationFillMode: 'both'
-                }}
-              >
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-nordic-gold text-nordic-gold" />
-                  ))}
-                </div>
-                <p className="text-muted-foreground mb-6 leading-relaxed italic">
-                  "{testimonial.content}"
-                </p>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-nordic-glacier to-nordic-ice flex items-center justify-center mr-4">
-                    <span className="text-lg font-semibold text-nordic-charcoal">
-                      {testimonial.name.split(' ').map(n => n[0]).join('')}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-nordic-charcoal">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {testimonial.role}
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      
 
       {/* Newsletter Section */}
-      <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-nordic-grey/30 to-nordic-white">
-        <div className="container mx-auto max-w-4xl">
-          <Card className="nordic-border nordic-shadow bg-white p-8 md:p-12 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-nordic-glacier to-nordic-ice mb-6">
-              <Mail className="h-8 w-8 text-nordic-charcoal" />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-nordic-charcoal">
-              Stay in the Loop
-            </h2>
-            <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Subscribe to our newsletter for exclusive previews, artist spotlights, and special offers
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-nordic-gold"
-              />
-              <Button variant="default" size="lg" className="whitespace-nowrap">
-                Subscribe
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground mt-4">
-              We respect your privacy. Unsubscribe at any time.
-            </p>
-          </Card>
-        </div>
-      </section>
+      
 
       {/* FAQ Section */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-nordic-white to-nordic-grey/20">
@@ -619,25 +447,18 @@ const Home = () => {
           </div>
 
           <Accordion type="single" collapsible className="w-full space-y-4">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="nordic-border rounded-lg px-6 bg-white nordic-shadow-hover overflow-hidden"
-                style={{ 
-                  animation: 'slide-up 0.5s ease-out',
-                  animationDelay: `${index * 0.08}s`,
-                  animationFillMode: 'both'
-                }}
-              >
+            {faqs.map((faq, index) => <AccordionItem key={index} value={`item-${index}`} className="nordic-border rounded-lg px-6 bg-white nordic-shadow-hover overflow-hidden" style={{
+            animation: 'slide-up 0.5s ease-out',
+            animationDelay: `${index * 0.08}s`,
+            animationFillMode: 'both'
+          }}>
                 <AccordionTrigger className="text-left text-base md:text-lg font-semibold hover:text-nordic-gold transition-colors duration-300">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-sm md:text-base text-muted-foreground leading-relaxed pt-2">
                   {faq.answer}
                 </AccordionContent>
-              </AccordionItem>
-            ))}
+              </AccordionItem>)}
           </Accordion>
         </div>
       </section>
@@ -646,18 +467,26 @@ const Home = () => {
       <section className="py-20 md:py-32 px-4 aurora-gradient relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-10 left-10 w-96 h-96 bg-nordic-gold rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-nordic-glacier rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-nordic-ice rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }} />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-nordic-glacier rounded-full blur-3xl animate-pulse" style={{
+          animationDelay: '1.5s'
+        }} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-nordic-ice rounded-full blur-3xl animate-pulse" style={{
+          animationDelay: '3s'
+        }} />
         </div>
         
         <div className="container mx-auto max-w-4xl text-center relative z-10">
           <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold mb-6 text-white drop-shadow-[0_2px_20px_rgba(0,0,0,0.3)] slide-up-on-scroll">
             Start Your Art Journey Today
           </h2>
-          <p className="text-lg md:text-xl lg:text-2xl mb-12 text-white/95 max-w-2xl mx-auto leading-relaxed font-light drop-shadow-[0_1px_10px_rgba(0,0,0,0.2)] slide-up-on-scroll" style={{ animationDelay: '0.2s' }}>
+          <p className="text-lg md:text-xl lg:text-2xl mb-12 text-white/95 max-w-2xl mx-auto leading-relaxed font-light drop-shadow-[0_1px_10px_rgba(0,0,0,0.2)] slide-up-on-scroll" style={{
+          animationDelay: '0.2s'
+        }}>
             Join thousands of art lovers who have discovered their perfect piece in our curated collection
           </p>
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center slide-up-on-scroll" style={{ animationDelay: '0.4s' }}>
+          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center slide-up-on-scroll" style={{
+          animationDelay: '0.4s'
+        }}>
             <Button variant="hero" size="lg" asChild className="w-full sm:w-auto bg-white text-nordic-charcoal hover:bg-nordic-white hover:scale-105 transition-all duration-300 shadow-xl">
               <Link to="/artworks" className="inline-flex items-center">
                 Browse Artworks
@@ -673,8 +502,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </main>
-  );
+    </main>;
 };
-
 export default Home;
