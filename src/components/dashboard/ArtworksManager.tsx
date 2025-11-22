@@ -132,6 +132,17 @@ export const ArtworksManager = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Basic validation for required fields
+    const priceNumber = parseFloat(formData.price);
+    if (!formData.title.trim() || isNaN(priceNumber)) {
+      toast({
+        title: "Ongeldige invoer",
+        description: "Vul minstens een titel en een geldige prijs in.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     let imageUrl = formData.image_url;
 
     // If file upload method and a file is selected, upload it
@@ -142,10 +153,16 @@ export const ArtworksManager = () => {
     }
 
     const artworkData = {
-      ...formData,
-      image_url: imageUrl,
-      price: parseFloat(formData.price),
-      year_created: formData.year_created ? parseInt(formData.year_created) : null,
+      title: formData.title.trim(),
+      artist_id: formData.artist_id || null,
+      description: formData.description || null,
+      price: priceNumber,
+      image_url: imageUrl || null,
+      category: formData.category || null,
+      dimensions: formData.dimensions || null,
+      medium: formData.medium || null,
+      year_created: formData.year_created ? parseInt(formData.year_created, 10) : null,
+      available: formData.available,
     };
 
     if (editingArtwork) {
