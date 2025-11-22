@@ -9,9 +9,24 @@ import { DiscountsManager } from '@/components/dashboard/DiscountsManager';
 import { PageContentManager } from '@/components/dashboard/PageContentManager';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { Loader2 } from 'lucide-react';
 
 const Dashboard = () => {
+  const { isLoading, isAdmin } = useAdminAuth();
   const [activeSection, setActiveSection] = useState('artworks');
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return null;
+  }
 
   const renderContent = () => {
     switch (activeSection) {
