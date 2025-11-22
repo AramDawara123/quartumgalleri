@@ -128,9 +128,9 @@ const Cart = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Shopping Cart</h1>
-        <p className="text-muted-foreground">{itemCount} item(s) in your cart</p>
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-4xl font-bold mb-2">Shopping Cart</h1>
+        <p className="text-sm md:text-base text-muted-foreground">{itemCount} item(s) in your cart</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -138,9 +138,9 @@ const Cart = () => {
           <div className="space-y-4">
             {items.map((item) => (
               <Card key={item.id}>
-                <CardContent className="p-6">
-                  <div className="flex gap-4">
-                    <div className="w-24 h-24 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                <CardContent className="p-4 md:p-6">
+                  <div className="flex gap-3 md:gap-4">
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                       {item.image_url ? (
                         <img
                           src={item.image_url}
@@ -154,23 +154,23 @@ const Cart = () => {
                       )}
                     </div>
                     
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h3 className="font-semibold text-lg">{item.title}</h3>
-                          <p className="text-muted-foreground">by {item.artist_name}</p>
+                        <div className="flex-1 min-w-0 mr-2">
+                          <h3 className="font-semibold text-base md:text-lg truncate">{item.title}</h3>
+                          <p className="text-sm text-muted-foreground truncate">by {item.artist_name}</p>
                         </div>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => removeFromCart(item.id)}
-                          className="text-destructive hover:text-destructive"
+                          className="text-destructive hover:text-destructive flex-shrink-0"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                       
-                      <div className="flex justify-between items-center">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                         <div className="flex items-center gap-2">
                           <Button
                             variant="outline"
@@ -188,7 +188,7 @@ const Cart = () => {
                             <Plus className="h-3 w-3" />
                           </Button>
                         </div>
-                        <p className="font-semibold">€{(item.price * item.quantity).toFixed(2)}</p>
+                        <p className="font-semibold text-lg">€{(item.price * item.quantity).toFixed(2)}</p>
                       </div>
                     </div>
                   </div>
@@ -199,7 +199,7 @@ const Cart = () => {
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="sticky top-4">
+          <Card className="lg:sticky lg:top-4">
             <CardHeader>
               <CardTitle>Summary</CardTitle>
             </CardHeader>
@@ -222,14 +222,15 @@ const Cart = () => {
                       Discount Code
                     </label>
                     {!appliedDiscount ? (
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-2">
                         <Input
                           placeholder="Enter code"
                           value={discountCode}
                           onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
                           onKeyDown={(e) => e.key === 'Enter' && applyDiscountCode()}
+                          className="flex-1"
                         />
-                        <Button onClick={applyDiscountCode} size="sm">
+                        <Button onClick={applyDiscountCode} size="sm" className="sm:w-auto">
                           Apply
                         </Button>
                       </div>
