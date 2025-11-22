@@ -142,7 +142,7 @@ const ArtistProfile = () => {
         </Button>
 
         {/* Artist Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-2">
           <div className="lg:col-span-1">
             <div className="relative aspect-square overflow-hidden rounded-lg">
               <img
@@ -191,7 +191,7 @@ const ArtistProfile = () => {
           </div>
         </div>
 
-        <Separator className="mb-4" />
+        <Separator className="mb-2" />
 
         {/* Artworks Section */}
         <section>
