@@ -23,8 +23,8 @@ const Cart = () => {
   const applyDiscountCode = async () => {
     if (!discountCode.trim()) {
       toast({
-        title: "Fout",
-        description: "Voer een kortingscode in",
+        title: "Error",
+        description: "Enter a discount code",
         variant: "destructive",
       });
       return;
@@ -40,8 +40,8 @@ const Cart = () => {
 
     if (error || !discount) {
       toast({
-        title: "Ongeldige code",
-        description: "Deze kortingscode is niet geldig of verlopen",
+        title: "Invalid code",
+        description: "This discount code is not valid or expired",
         variant: "destructive",
       });
       return;
@@ -54,8 +54,8 @@ const Cart = () => {
 
     if (now < startDate || (endDate && now > endDate)) {
       toast({
-        title: "Verlopen code",
-        description: "Deze kortingscode is verlopen",
+        title: "Expired code",
+        description: "This discount code has expired",
         variant: "destructive",
       });
       return;
@@ -63,8 +63,8 @@ const Cart = () => {
 
     if (discount.max_uses && discount.current_uses >= discount.max_uses) {
       toast({
-        title: "Code gebruikt",
-        description: "Deze kortingscode is al het maximaal aantal keren gebruikt",
+        title: "Code used",
+        description: "This discount code has already been used the maximum number of times",
         variant: "destructive",
       });
       return;
@@ -72,8 +72,8 @@ const Cart = () => {
 
     if (discount.min_purchase && total < Number(discount.min_purchase)) {
       toast({
-        title: "Minimum aankoop niet bereikt",
-        description: `Minimum aankoop van €${Number(discount.min_purchase).toFixed(2)} vereist`,
+        title: "Minimum purchase not reached",
+        description: `Minimum purchase of €${Number(discount.min_purchase).toFixed(2)} required`,
         variant: "destructive",
       });
       return;
@@ -95,8 +95,8 @@ const Cart = () => {
     });
 
     toast({
-      title: "Korting toegepast!",
-      description: `€${discountAmount.toFixed(2)} korting toegepast`,
+      title: "Discount applied!",
+      description: `€${discountAmount.toFixed(2)} discount applied`,
     });
   };
 
@@ -104,8 +104,8 @@ const Cart = () => {
     setAppliedDiscount(null);
     setDiscountCode('');
     toast({
-      title: "Korting verwijderd",
-      description: "De kortingscode is verwijderd van uw winkelwagen",
+      title: "Discount removed",
+      description: "The discount code has been removed from your cart",
     });
   };
 
@@ -116,10 +116,10 @@ const Cart = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-16">
           <ShoppingBag className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-          <h2 className="text-2xl font-bold mb-2">Uw winkelwagen is leeg</h2>
-          <p className="text-muted-foreground mb-6">Voeg enkele prachtige kunstwerken toe aan uw collectie</p>
+          <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
+          <p className="text-muted-foreground mb-6">Add some beautiful artworks to your collection</p>
           <Link to="/artworks">
-            <Button>Bekijk Kunstwerken</Button>
+            <Button>View Artworks</Button>
           </Link>
         </div>
       </div>
@@ -129,8 +129,8 @@ const Cart = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Winkelwagen</h1>
-        <p className="text-muted-foreground">{itemCount} item(s) in uw winkelwagen</p>
+        <h1 className="text-4xl font-bold mb-2">Shopping Cart</h1>
+        <p className="text-muted-foreground">{itemCount} item(s) in your cart</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -158,7 +158,7 @@ const Cart = () => {
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <h3 className="font-semibold text-lg">{item.title}</h3>
-                          <p className="text-muted-foreground">door {item.artist_name}</p>
+                          <p className="text-muted-foreground">by {item.artist_name}</p>
                         </div>
                         <Button
                           variant="ghost"
@@ -201,17 +201,17 @@ const Cart = () => {
         <div className="lg:col-span-1">
           <Card className="sticky top-4">
             <CardHeader>
-              <CardTitle>Overzicht</CardTitle>
+              <CardTitle>Summary</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span>Subtotaal:</span>
+                  <span>Subtotal:</span>
                   <span>€{total.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Verzendkosten:</span>
-                  <span>Gratis</span>
+                  <span>Shipping:</span>
+                  <span>Free</span>
                 </div>
 
                 {/* Discount Code Section */}
@@ -219,18 +219,18 @@ const Cart = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium flex items-center gap-2">
                       <Tag className="h-4 w-4" />
-                      Kortingscode
+                      Discount Code
                     </label>
                     {!appliedDiscount ? (
                       <div className="flex gap-2">
                         <Input
-                          placeholder="Voer code in"
+                          placeholder="Enter code"
                           value={discountCode}
                           onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
                           onKeyDown={(e) => e.key === 'Enter' && applyDiscountCode()}
                         />
                         <Button onClick={applyDiscountCode} size="sm">
-                          Toepassen
+                          Apply
                         </Button>
                       </div>
                     ) : (
@@ -239,8 +239,8 @@ const Cart = () => {
                           <p className="font-medium text-sm">{appliedDiscount.code}</p>
                           <p className="text-xs text-muted-foreground">
                             {appliedDiscount.type === 'percentage' 
-                              ? `${appliedDiscount.value}% korting`
-                              : `€${appliedDiscount.value.toFixed(2)} korting`}
+                              ? `${appliedDiscount.value}% discount`
+                              : `€${appliedDiscount.value.toFixed(2)} discount`}
                           </p>
                         </div>
                         <Button 
@@ -258,28 +258,28 @@ const Cart = () => {
 
                 {appliedDiscount && (
                   <div className="flex justify-between text-green-600">
-                    <span>Korting:</span>
+                    <span>Discount:</span>
                     <span>-€{appliedDiscount.amount.toFixed(2)}</span>
                   </div>
                 )}
 
                 <div className="border-t pt-4">
                   <div className="flex justify-between font-bold text-lg">
-                    <span>Totaal:</span>
+                    <span>Total:</span>
                     <span>€{finalTotal.toFixed(2)}</span>
                   </div>
                 </div>
                 
                 <div className="space-y-2 pt-4">
                   <Button className="w-full" size="lg" asChild>
-                    <Link to="/checkout">Afrekenen</Link>
+                    <Link to="/checkout">Checkout</Link>
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full"
                     onClick={clearCart}
                   >
-                    Winkelwagen Legen
+                    Clear Cart
                   </Button>
                 </div>
               </div>
