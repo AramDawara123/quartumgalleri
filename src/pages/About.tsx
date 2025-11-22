@@ -5,12 +5,19 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import galleryHero from "@/assets/gallery-hero.jpg";
 
+const iconMap = {
+  award: Award,
+  users: Users,
+  heart: Heart,
+};
+
 const About = () => {
   const [pageContent, setPageContent] = useState<{
     title: string;
     subtitle: string | null;
     content: string;
     image_url: string | null;
+    additional_data?: any;
   } | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +45,12 @@ const About = () => {
       </main>
     );
   }
+
+  const additionalData = (pageContent?.additional_data as any) || {};
+  const achievements = additionalData.achievements || [];
+  const missionText = additionalData.mission_text || "";
+  const values = additionalData.values || [];
+  const teamMembers = additionalData.team_members || [];
   const teamMembers = [
     {
       name: "Victoria Sterling",
@@ -127,84 +140,82 @@ const About = () => {
         </div>
 
         {/* Achievements */}
-        <div className="mb-20">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12 text-primary">
-            Our Impact
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {achievements.map((achievement, index) => (
-              <Card
-                key={index}
-                className="gallery-hover text-center border-0 shadow-lg"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <CardContent className="p-8">
-                  <achievement.icon className="h-16 w-16 text-accent mx-auto mb-6" />
-                  <h3 className="text-3xl font-bold text-primary mb-4">
-                    {achievement.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {achievement.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+        {achievements.length > 0 && (
+          <div className="mb-20">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12 text-primary">
+              Our Impact
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {achievements.map((achievement: any, index: number) => {
+                const IconComponent = iconMap[achievement.icon as keyof typeof iconMap] || Award;
+                return (
+                  <Card
+                    key={index}
+                    className="gallery-hover text-center border-0 shadow-lg"
+                    style={{ animationDelay: `${index * 0.2}s` }}
+                  >
+                    <CardContent className="p-8">
+                      <IconComponent className="h-16 w-16 text-accent mx-auto mb-6" />
+                      <h3 className="text-3xl font-bold text-primary mb-4">
+                        {achievement.title}
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {achievement.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Our Mission & Values */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-primary">
-              Our Mission & Values
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Guided by principles that define our commitment to art, artists, and community
-            </p>
-          </div>
+        {(missionText || values.length > 0) && (
+          <div className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-primary">
+                Our Mission & Values
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Guided by principles that define our commitment to art, artists, and community
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="border border-border/50 hover:border-accent/50 transition-colors">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-serif font-bold mb-4 text-primary">
-                  Our Mission
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  To discover, showcase, and celebrate contemporary art that challenges conventions, 
-                  inspires dialogue, and enriches the cultural landscape. We are committed to supporting 
-                  artists at every stage of their careers while making exceptional art accessible to 
-                  collectors and enthusiasts alike.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {missionText && (
+                <Card className="border border-border/50 hover:border-accent/50 transition-colors">
+                  <CardContent className="p-8">
+                    <h3 className="text-2xl font-serif font-bold mb-4 text-primary">
+                      Our Mission
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+                      {missionText}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
 
-            <Card className="border border-border/50 hover:border-accent/50 transition-colors">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-serif font-bold mb-4 text-primary">
-                  Our Values
-                </h3>
-                <ul className="space-y-3 text-muted-foreground">
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    <span>Authenticity in every piece we represent</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    <span>Excellence in curation and presentation</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    <span>Inclusivity and accessibility in art appreciation</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    <span>Innovation in bridging traditional and contemporary</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+              {values.length > 0 && (
+                <Card className="border border-border/50 hover:border-accent/50 transition-colors">
+                  <CardContent className="p-8">
+                    <h3 className="text-2xl font-serif font-bold mb-4 text-primary">
+                      Our Values
+                    </h3>
+                    <ul className="space-y-3 text-muted-foreground">
+                      {values.map((value: string, index: number) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                          <span>{value}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Team */}
         <div className="mb-20">
