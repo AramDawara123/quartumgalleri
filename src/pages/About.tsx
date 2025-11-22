@@ -1,9 +1,43 @@
-import { Quote, Award, Users, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Quote, Award, Users, Heart, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 import galleryHero from "@/assets/gallery-hero.jpg";
 
 const About = () => {
+  const [pageContent, setPageContent] = useState<{
+    title: string;
+    subtitle: string | null;
+    content: string;
+    image_url: string | null;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadPageContent();
+  }, []);
+
+  const loadPageContent = async () => {
+    const { data, error } = await supabase
+      .from('page_content')
+      .select('*')
+      .eq('page_name', 'about_us')
+      .single();
+
+    if (data) {
+      setPageContent(data);
+    }
+    setLoading(false);
+  };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </main>
+    );
+  }
   const teamMembers = [
     {
       name: "Victoria Sterling",
@@ -49,10 +83,10 @@ const About = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-primary">
-            About Artisan Gallery
+            {pageContent?.title || "About Artisan Gallery"}
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            A sanctuary for contemporary art, where creativity meets sophistication and every piece tells a unique story
+            {pageContent?.subtitle || "A sanctuary for contemporary art, where creativity meets sophistication and every piece tells a unique story"}
           </p>
         </div>
 
@@ -60,45 +94,20 @@ const About = () => {
         <div className="mb-20">
           <div className="relative aspect-[21/9] rounded-2xl overflow-hidden mb-12">
             <img
-              src={galleryHero}
-              alt="Artisan Gallery Interior"
+              src={pageContent?.image_url || galleryHero}
+              alt="Gallery Interior"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-            <div className="absolute bottom-8 left-8 right-8 text-white">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
-                Where Art Meets Soul
-              </h2>
-              <p className="text-lg opacity-90 max-w-2xl">
-                Since 2004, we've been a beacon for contemporary art enthusiasts, 
-                fostering connections between artists and collectors in an atmosphere of elegance and discovery.
-              </p>
-            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-primary">
-                Our Story
+                {pageContent?.title || "Our Story"}
               </h2>
-              <div className="space-y-6 text-muted-foreground leading-relaxed">
-                <p>
-                  Founded in the heart of the arts district, Artisan Gallery emerged from a passion for 
-                  contemporary expression and a vision to create a space where art transcends boundaries. 
-                  Our journey began with a simple belief: that extraordinary art has the power to transform 
-                  spaces, inspire conversations, and touch the human spirit.
-                </p>
-                <p>
-                  Over two decades, we have carefully curated a collection that represents the finest in 
-                  contemporary art, from emerging talents to internationally acclaimed masters. Each piece 
-                  in our gallery is selected not just for its aesthetic merit, but for its ability to 
-                  provoke thought, evoke emotion, and challenge perspectives.
-                </p>
-                <p>
-                  Today, Artisan Gallery stands as more than a commercial space—we are a cultural hub, 
-                  an educational resource, and a community gathering place for those who appreciate the 
-                  transformative power of art.
-                </p>
+              <div className="space-y-6 text-muted-foreground leading-relaxed whitespace-pre-line">
+                {pageContent?.content || "Welcome to our gallery..."}
               </div>
             </div>
             

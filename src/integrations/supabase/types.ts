@@ -354,6 +354,42 @@ export type Database = {
         }
         Relationships: []
       }
+      page_content: {
+        Row: {
+          additional_data: Json | null
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          page_name: string
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          additional_data?: Json | null
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          page_name: string
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          additional_data?: Json | null
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          page_name?: string
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
