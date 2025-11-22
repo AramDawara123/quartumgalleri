@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, Calendar, Eye, ShoppingBag, Palette, Award } from "lucide-react";
+import { ArrowRight, Calendar, Eye, ShoppingBag, Palette, Award, Shield, Truck, Heart, Users, Star, TrendingUp, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -401,8 +401,213 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Why Choose Us Section */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-nordic-white to-nordic-grey/20">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center mb-12 md:mb-16 slide-up-on-scroll">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4 text-nordic-charcoal">
+              Why Choose Our Gallery
+            </h2>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+              Your trusted partner in discovering and collecting exceptional art
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                icon: Shield,
+                title: "Authenticity Guaranteed",
+                description: "Every artwork comes with a certificate of authenticity and our lifetime guarantee"
+              },
+              {
+                icon: Truck,
+                title: "Worldwide Shipping",
+                description: "Professional packaging and insured delivery to over 100 countries worldwide"
+              },
+              {
+                icon: Heart,
+                title: "Curated Selection",
+                description: "Handpicked artworks from established and emerging contemporary artists"
+              },
+              {
+                icon: Users,
+                title: "Expert Support",
+                description: "Our art consultants are here to help you find the perfect piece for your collection"
+              }
+            ].map((feature, index) => (
+              <Card
+                key={index}
+                className="text-center p-8 nordic-border nordic-shadow-hover bg-white group"
+                style={{ 
+                  animation: 'slide-up 0.6s ease-out',
+                  animationDelay: `${index * 0.1}s`,
+                  animationFillMode: 'both'
+                }}
+              >
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-nordic-glacier to-nordic-ice mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="h-8 w-8 text-nordic-charcoal" />
+                </div>
+                <h3 className="font-serif text-xl font-semibold mb-3 text-nordic-charcoal">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Statistics Section */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-r from-nordic-charcoal via-nordic-charcoal/95 to-nordic-charcoal text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-nordic-gold rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-nordic-glacier rounded-full blur-3xl" />
+        </div>
+        
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
+              Our Gallery in Numbers
+            </h2>
+            <p className="text-base md:text-lg text-white/80 max-w-2xl mx-auto">
+              Join a thriving community of art enthusiasts and collectors
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+            {[
+              { number: "500+", label: "Artworks", icon: Palette },
+              { number: "50+", label: "Featured Artists", icon: Users },
+              { number: "98%", label: "Customer Satisfaction", icon: Star },
+              { number: "20+", label: "Years Experience", icon: TrendingUp }
+            ].map((stat, index) => (
+              <div
+                key={index}
+                className="text-center slide-up-on-scroll"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-nordic-gold/20 mb-4">
+                  <stat.icon className="h-6 w-6 text-nordic-gold" />
+                </div>
+                <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-nordic-gold font-serif">
+                  {stat.number}
+                </div>
+                <div className="text-sm md:text-base text-white/80 font-medium">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16 md:py-24 px-4 bg-nordic-white">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center mb-12 md:mb-16 slide-up-on-scroll">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4 text-nordic-charcoal">
+              What Our Collectors Say
+            </h2>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+              Hear from art lovers who have found their perfect pieces
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Sarah Mitchell",
+                role: "Art Collector",
+                content: "The quality and authenticity of the artworks is exceptional. The team helped me find the perfect piece for my living room. Highly recommend!",
+                rating: 5
+              },
+              {
+                name: "James Chen",
+                role: "Interior Designer",
+                content: "I've purchased multiple pieces for my clients. The curation is outstanding and the shipping process is seamless. A true professional gallery.",
+                rating: 5
+              },
+              {
+                name: "Emma Thompson",
+                role: "Private Collector",
+                content: "Discovering this gallery was a game-changer. The variety of contemporary artists and the expert guidance made my collecting journey enjoyable.",
+                rating: 5
+              }
+            ].map((testimonial, index) => (
+              <Card
+                key={index}
+                className="p-8 nordic-border nordic-shadow-hover bg-white"
+                style={{ 
+                  animation: 'slide-up 0.6s ease-out',
+                  animationDelay: `${index * 0.15}s`,
+                  animationFillMode: 'both'
+                }}
+              >
+                <div className="flex mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-nordic-gold text-nordic-gold" />
+                  ))}
+                </div>
+                <p className="text-muted-foreground mb-6 leading-relaxed italic">
+                  "{testimonial.content}"
+                </p>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-nordic-glacier to-nordic-ice flex items-center justify-center mr-4">
+                    <span className="text-lg font-semibold text-nordic-charcoal">
+                      {testimonial.name.split(' ').map(n => n[0]).join('')}
+                    </span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-nordic-charcoal">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {testimonial.role}
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-nordic-grey/30 to-nordic-white">
+        <div className="container mx-auto max-w-4xl">
+          <Card className="nordic-border nordic-shadow bg-white p-8 md:p-12 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-nordic-glacier to-nordic-ice mb-6">
+              <Mail className="h-8 w-8 text-nordic-charcoal" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-nordic-charcoal">
+              Stay in the Loop
+            </h2>
+            <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Subscribe to our newsletter for exclusive previews, artist spotlights, and special offers
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-nordic-gold"
+              />
+              <Button variant="default" size="lg" className="whitespace-nowrap">
+                Subscribe
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-4">
+              We respect your privacy. Unsubscribe at any time.
+            </p>
+          </Card>
+        </div>
+      </section>
+
       {/* FAQ Section */}
-      <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-nordic-grey/20 to-nordic-white">
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-nordic-white to-nordic-grey/20">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12 md:mb-16 slide-up-on-scroll">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4 text-nordic-charcoal">
