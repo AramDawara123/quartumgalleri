@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ImageUpload } from "./ImageUpload";
 
 const achievementSchema = z.object({
   icon: z.enum(["Award", "Users", "Heart", "Target", "Sparkles", "Globe"]),
@@ -404,21 +405,14 @@ export const PageContentManager = () => {
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="image_url">Hero Image URL</Label>
-                <Input
-                  id="image_url"
-                  type="url"
-                  value={formData.image_url}
-                  onChange={(e) => handleChange("image_url", e.target.value)}
-                  placeholder="https://example.com/image.jpg"
-                  maxLength={500}
-                  className={errors.image_url ? "border-destructive" : ""}
-                />
-                {errors.image_url && (
-                  <p className="text-sm text-destructive">{errors.image_url}</p>
-                )}
-              </div>
+              <ImageUpload
+                value={formData.image_url || ""}
+                onChange={(url) => handleChange("image_url", url)}
+                label="Hero Image"
+              />
+              {errors.image_url && (
+                <p className="text-sm text-destructive">{errors.image_url}</p>
+              )}
 
               <div className="space-y-2">
                 <Label htmlFor="content">Page Content *</Label>
@@ -621,18 +615,13 @@ export const PageContentManager = () => {
                           maxLength={500}
                         />
                       </div>
-                      <div className="space-y-1 md:col-span-2">
-                        <Label>Image URL</Label>
-                        <Input
+                      <div className="md:col-span-2">
+                        <ImageUpload
                           value={member.image_url}
-                          onChange={(e) =>
-                            handleTeamMemberChange(
-                              index,
-                              "image_url",
-                              e.target.value,
-                            )
+                          onChange={(url) =>
+                            handleTeamMemberChange(index, "image_url", url)
                           }
-                          maxLength={500}
+                          label="Team Member Image"
                         />
                       </div>
                     </div>
