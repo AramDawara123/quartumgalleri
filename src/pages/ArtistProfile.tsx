@@ -126,7 +126,7 @@ const ArtistProfile = () => {
         </Button>
 
         {/* Artist Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-0">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-0 mx-auto max-w-7xl">
           <div className="lg:col-span-1">
             <div className="relative aspect-square overflow-hidden rounded-lg">
               <img src={artist.image_url || 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=600&h=600&fit=crop&crop=face'} alt={artist.name} className="w-full h-full object-cover" />
