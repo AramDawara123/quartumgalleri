@@ -150,16 +150,13 @@ const ArtistProfile = () => {
             </p>
 
             <div className="space-y-4">
-              <div className="flex items-center justify-center space-x-4">
+              <div className="flex items-center justify-center">
                 {artist.website && <Button variant="default" asChild>
                     <a href={artist.website.startsWith('http') ? artist.website : `https://${artist.website}`} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-2 h-4 w-4" />
                       Visit Website
                     </a>
                   </Button>}
-                <Button variant="outline" asChild>
-                  
-                </Button>
               </div>
             </div>
           </div>
