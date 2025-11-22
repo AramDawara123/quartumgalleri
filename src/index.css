@@ -36,6 +36,16 @@ All colors MUST be HSL.
     --gallery-gold: 45 93% 47%;
     --gallery-cream: 35 25% 95%;
     --gallery-charcoal: 220 13% 18%;
+    
+    /* Scandinavian Gallery Colors */
+    --nordic-white: 0 0% 98%;
+    --nordic-grey: 210 10% 88%;
+    --nordic-charcoal: 215 15% 25%;
+    --nordic-glacier: 195 80% 92%;
+    --nordic-ice: 195 50% 85%;
+    --nordic-gold: 45 85% 65%;
+    --nordic-sunset-start: 45 100% 70%;
+    --nordic-sunset-end: 195 85% 60%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 28 15% 97%;
@@ -91,6 +101,16 @@ All colors MUST be HSL.
     --gallery-gold: 45 93% 47%;
     --gallery-cream: 220 13% 20%;
     --gallery-charcoal: 28 15% 97%;
+    
+    /* Scandinavian Gallery Colors - Dark Mode */
+    --nordic-white: 0 0% 15%;
+    --nordic-grey: 210 10% 25%;
+    --nordic-charcoal: 215 15% 85%;
+    --nordic-glacier: 195 80% 30%;
+    --nordic-ice: 195 50% 40%;
+    --nordic-gold: 45 85% 65%;
+    --nordic-sunset-start: 45 100% 70%;
+    --nordic-sunset-end: 195 85% 60%;
 
     --destructive: 0 62.8% 60%;
     --destructive-foreground: 28 15% 97%;
@@ -252,5 +272,112 @@ All colors MUST be HSL.
 
   .magnetic-hover:hover {
     transform: translateY(-8px) scale(1.02);
+  }
+
+  /* Scandinavian Design Animations */
+  @keyframes parallax-float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes text-reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+      clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
+
+  @keyframes button-float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  @keyframes aurora-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .parallax-hero {
+    transition: transform 0.1s ease-out;
+  }
+
+  .text-reveal {
+    animation: text-reveal 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .button-float {
+    animation: button-float 3s ease-in-out infinite;
+  }
+
+  .nordic-shadow {
+    box-shadow: 0 4px 20px -2px hsl(var(--nordic-charcoal) / 0.08),
+                0 2px 8px -2px hsl(var(--nordic-charcoal) / 0.05);
+  }
+
+  .nordic-shadow-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nordic-shadow-hover:hover {
+    box-shadow: 0 12px 40px -4px hsl(var(--nordic-charcoal) / 0.12),
+                0 4px 16px -4px hsl(var(--nordic-charcoal) / 0.08);
+    transform: translateY(-4px);
+  }
+
+  .aurora-gradient {
+    background: linear-gradient(135deg, 
+      hsl(var(--nordic-sunset-start)),
+      hsl(var(--nordic-glacier)),
+      hsl(var(--nordic-sunset-end)));
+    background-size: 200% 200%;
+    animation: aurora-shift 8s ease-in-out infinite;
+  }
+
+  .slide-up-on-scroll {
+    animation: slide-up 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .nordic-border {
+    border: 1px solid hsl(var(--nordic-grey) / 0.3);
+  }
+
+  .nordic-divider {
+    position: relative;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent 0%,
+      hsl(var(--nordic-ice)) 20%,
+      hsl(var(--nordic-glacier)) 50%,
+      hsl(var(--nordic-ice)) 80%,
+      transparent 100%);
   }
 }
