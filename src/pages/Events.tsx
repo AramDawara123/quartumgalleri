@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { EventDetailDialog } from '@/components/EventDetailDialog';
 
 interface Event {
   id: string;
@@ -22,6 +23,8 @@ interface Event {
 const Events = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const loadEvents = async () => {
@@ -78,6 +81,11 @@ const Events = () => {
 
   const isUpcoming = (eventDate: string) => {
     return new Date(eventDate) > new Date();
+  };
+
+  const handleEventClick = (event: Event) => {
+    setSelectedEvent(event);
+    setDialogOpen(true);
   };
 
   if (loading) {
@@ -149,8 +157,15 @@ const Events = () => {
   const featuredEvents = upcomingEvents.slice(0, 2); // Show first 2 upcoming as featured
 
   return (
-    <main className="min-h-screen py-8">
-      <div className="container mx-auto px-4">
+    <>
+      <EventDetailDialog 
+        event={selectedEvent}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
+      
+      <main className="min-h-screen py-8">
+        <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-primary">
@@ -196,7 +211,11 @@ const Events = () => {
                       </div>
                       <div className="artwork-overlay group-hover:opacity-100 flex items-end">
                         <div className="p-6 text-white w-full">
-                          <Button variant="hero" className="w-full">
+                          <Button 
+                            variant="hero" 
+                            className="w-full"
+                            onClick={() => handleEventClick(event)}
+                          >
                             <Ticket className="mr-2 h-4 w-4" />
                             Learn More
                           </Button>
@@ -236,7 +255,10 @@ const Events = () => {
                         <span className="text-2xl font-bold text-accent">
                           {event.price > 0 ? `€${event.price}` : 'Free'}
                         </span>
-                        <Button variant="luxury">
+                        <Button 
+                          variant="luxury"
+                          onClick={() => handleEventClick(event)}
+                        >
                           Learn More
                         </Button>
                       </div>
@@ -296,7 +318,11 @@ const Events = () => {
                     <span className="font-bold text-accent">
                       {event.price > 0 ? `€${event.price}` : 'Free'}
                     </span>
-                    <Button variant="elegant" size="sm">
+                    <Button 
+                      variant="elegant" 
+                      size="sm"
+                      onClick={() => handleEventClick(event)}
+                    >
                       Details
                     </Button>
                   </div>
@@ -326,8 +352,9 @@ const Events = () => {
             </Button>
           </div>
         </div>
-      </div>
-    </main>
+        </div>
+      </main>
+    </>
   );
 };
 
