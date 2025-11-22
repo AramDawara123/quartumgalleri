@@ -101,14 +101,14 @@ export const PageContentManager = () => {
         variant: "destructive",
       });
     } else if (data) {
-      const additionalData = data.additional_data || {};
+      const additionalData = (data.additional_data as any) || {};
       setFormData({
         title: data.title,
         subtitle: data.subtitle || "",
         content: data.content,
         image_url: data.image_url || "",
         achievements: additionalData.achievements || [
-          { icon: 'award', title: '20+ Years', description: 'Of excellence in contemporary art curation' }
+          { icon: 'award' as const, title: '20+ Years', description: 'Of excellence in contemporary art curation' }
         ],
         mission_text: additionalData.mission_text || "",
         values: additionalData.values || ["Authenticity in every piece we represent"],
