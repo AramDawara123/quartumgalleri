@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import { ImageUpload } from './ImageUpload';
 
 interface Artist {
   id: string;
@@ -166,10 +167,11 @@ export const ArtistsManager = () => {
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
               />
-              <Input
-                placeholder="Afbeelding URL"
+              <ImageUpload
+                label="Afbeelding"
                 value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                onChange={(url) => setFormData({ ...formData, image_url: url })}
+                bucket="page-content"
               />
               <Input
                 placeholder="Website"
