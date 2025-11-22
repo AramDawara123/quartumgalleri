@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
-import { Quote, Award, Users, Heart, Loader2 } from "lucide-react";
+import { Quote, Award, Users, Heart, Loader2, Target, Sparkles, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import galleryHero from "@/assets/gallery-hero.jpg";
+
+// Icon mapping for dynamic rendering
+const iconMap: Record<string, any> = {
+  Award,
+  Users,
+  Heart,
+  Target,
+  Sparkles,
+  Globe,
+};
 
 const About = () => {
   const [pageContent, setPageContent] = useState<{
@@ -11,6 +21,10 @@ const About = () => {
     subtitle: string | null;
     content: string;
     image_url: string | null;
+    achievements: Array<{ icon: string; title: string; description: string }>;
+    mission_text: string;
+    values: string[];
+    team_members: Array<{ name: string; role: string; bio: string; image_url: string }>;
   } | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -23,10 +37,48 @@ const About = () => {
       .from('page_content')
       .select('*')
       .eq('page_name', 'about_us')
-      .single();
+      .maybeSingle();
 
     if (data) {
-      setPageContent(data);
+      const additionalData = data.additional_data as any || {};
+      setPageContent({
+        title: data.title,
+        subtitle: data.subtitle,
+        content: data.content,
+        image_url: data.image_url,
+        achievements: additionalData.achievements || [
+          { icon: "Award", title: "20+ Years", description: "Of excellence in contemporary art curation" },
+          { icon: "Users", title: "500+ Artists", description: "Represented from around the globe" },
+          { icon: "Heart", title: "10,000+ Collectors", description: "Trust us with their art acquisitions" },
+        ],
+        mission_text: additionalData.mission_text || "To discover, showcase, and celebrate contemporary art that challenges conventions, inspires dialogue, and enriches the cultural landscape. We are committed to supporting artists at every stage of their careers while making exceptional art accessible to collectors and enthusiasts alike.",
+        values: additionalData.values || [
+          "Authenticity in every piece we represent",
+          "Excellence in curation and presentation",
+          "Inclusivity and accessibility in art appreciation",
+          "Innovation in bridging traditional and contemporary",
+        ],
+        team_members: additionalData.team_members || [
+          {
+            name: "Victoria Sterling",
+            role: "Gallery Director & Curator",
+            bio: "With over 15 years in contemporary art curation, Victoria has shaped the gallery's vision and established relationships with emerging and established artists worldwide.",
+            image_url: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+          },
+          {
+            name: "Marcus Chen",
+            role: "Senior Art Consultant",
+            bio: "Marcus brings expertise in art valuation and collection management, helping clients discover pieces that resonate with their aesthetic and investment goals.",
+            image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+          },
+          {
+            name: "Isabella Rodriguez",
+            role: "Education & Outreach Director",
+            bio: "Isabella develops our educational programs and community partnerships, making contemporary art accessible to diverse audiences through innovative initiatives.",
+            image_url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+          },
+        ],
+      });
     }
     setLoading(false);
   };
@@ -38,44 +90,10 @@ const About = () => {
       </main>
     );
   }
-  const teamMembers = [
-    {
-      name: "Victoria Sterling",
-      role: "Gallery Director & Curator",
-      bio: "With over 15 years in contemporary art curation, Victoria has shaped the gallery's vision and established relationships with emerging and established artists worldwide.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      name: "Marcus Chen",
-      role: "Senior Art Consultant",
-      bio: "Marcus brings expertise in art valuation and collection management, helping clients discover pieces that resonate with their aesthetic and investment goals.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      name: "Isabella Rodriguez",
-      role: "Education & Outreach Director",
-      bio: "Isabella develops our educational programs and community partnerships, making contemporary art accessible to diverse audiences through innovative initiatives.",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-    },
-  ];
 
-  const achievements = [
-    {
-      icon: Award,
-      title: "20+ Years",
-      description: "Of excellence in contemporary art curation",
-    },
-    {
-      icon: Users,
-      title: "500+ Artists",
-      description: "Represented from around the globe",
-    },
-    {
-      icon: Heart,
-      title: "10,000+ Collectors",
-      description: "Trust us with their art acquisitions",
-    },
-  ];
+  if (!pageContent) {
+    return null;
+  }
 
   return (
     <main className="min-h-screen py-8">
@@ -83,10 +101,10 @@ const About = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-primary">
-            {pageContent?.title || "About Artisan Gallery"}
+            {pageContent.title}
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            {pageContent?.subtitle || "A sanctuary for contemporary art, where creativity meets sophistication and every piece tells a unique story"}
+            {pageContent.subtitle || "A sanctuary for contemporary art, where creativity meets sophistication and every piece tells a unique story"}
           </p>
         </div>
 
@@ -94,7 +112,7 @@ const About = () => {
         <div className="mb-20">
           <div className="relative aspect-[21/9] rounded-2xl overflow-hidden mb-12">
             <img
-              src={pageContent?.image_url || galleryHero}
+              src={pageContent.image_url || galleryHero}
               alt="Gallery Interior"
               className="w-full h-full object-cover"
             />
@@ -104,10 +122,10 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-primary">
-                {pageContent?.title || "Our Story"}
+                Our Story
               </h2>
               <div className="space-y-6 text-muted-foreground leading-relaxed whitespace-pre-line">
-                {pageContent?.content || "Welcome to our gallery..."}
+                {pageContent.content}
               </div>
             </div>
             
@@ -132,23 +150,26 @@ const About = () => {
             Our Impact
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {achievements.map((achievement, index) => (
-              <Card
-                key={index}
-                className="gallery-hover text-center border-0 shadow-lg"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <CardContent className="p-8">
-                  <achievement.icon className="h-16 w-16 text-accent mx-auto mb-6" />
-                  <h3 className="text-3xl font-bold text-primary mb-4">
-                    {achievement.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {achievement.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+            {pageContent.achievements.map((achievement, index) => {
+              const IconComponent = iconMap[achievement.icon] || Award;
+              return (
+                <Card
+                  key={index}
+                  className="gallery-hover text-center border-0 shadow-lg"
+                  style={{ animationDelay: `${index * 0.2}s` }}
+                >
+                  <CardContent className="p-8">
+                    <IconComponent className="h-16 w-16 text-accent mx-auto mb-6" />
+                    <h3 className="text-3xl font-bold text-primary mb-4">
+                      {achievement.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {achievement.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
 
@@ -169,11 +190,8 @@ const About = () => {
                 <h3 className="text-2xl font-serif font-bold mb-4 text-primary">
                   Our Mission
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  To discover, showcase, and celebrate contemporary art that challenges conventions, 
-                  inspires dialogue, and enriches the cultural landscape. We are committed to supporting 
-                  artists at every stage of their careers while making exceptional art accessible to 
-                  collectors and enthusiasts alike.
+                <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+                  {pageContent.mission_text}
                 </p>
               </CardContent>
             </Card>
@@ -184,22 +202,12 @@ const About = () => {
                   Our Values
                 </h3>
                 <ul className="space-y-3 text-muted-foreground">
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    <span>Authenticity in every piece we represent</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    <span>Excellence in curation and presentation</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    <span>Inclusivity and accessibility in art appreciation</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    <span>Innovation in bridging traditional and contemporary</span>
-                  </li>
+                  {pageContent.values.map((value, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                      <span>{value}</span>
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>
@@ -218,7 +226,7 @@ const About = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {teamMembers.map((member, index) => (
+            {pageContent.team_members.map((member, index) => (
               <Card
                 key={index}
                 className="gallery-hover overflow-hidden border-0 shadow-lg"
@@ -227,7 +235,7 @@ const About = () => {
                 <CardContent className="p-0">
                   <div className="aspect-square overflow-hidden">
                     <img
-                      src={member.image}
+                      src={member.image_url}
                       alt={member.name}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
