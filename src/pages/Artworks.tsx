@@ -235,7 +235,7 @@ const Artworks = () => {
                           className="flex-1"
                           onClick={(e) => {
                             e.preventDefault();
-                            addToCart(artwork.id, artwork);
+                            addToCart(artwork.id, artwork, 'artwork');
                           }}
                         >
                           <ShoppingBag className="mr-2 h-4 w-4" />

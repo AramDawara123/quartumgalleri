@@ -94,7 +94,7 @@ const ArtworkDetail = () => {
 
   const handleAddToCart = () => {
     if (artwork) {
-      addToCart(artwork.id, artwork);
+      addToCart(artwork.id, artwork, 'artwork');
       toast({
         title: "Added to cart",
         description: `${artwork.title} has been added to your cart`,

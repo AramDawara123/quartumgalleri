@@ -65,16 +65,13 @@ export const EventDetailDialog = ({ event, open, onOpenChange }: EventDetailDial
 
     setIsAddingToCart(true);
     try {
-      // Add event as a special cart item (we'll treat it like an artwork for checkout)
+      // Add event to cart
       await addToCart(event.id, {
         id: event.id,
-        title: `Event: ${event.title}`,
+        title: event.title,
         price: event.price || 0,
         image_url: event.image_url,
-        artist_name: formatEventDate(event.event_date),
-        artist_id: null,
-        available: true,
-      } as any);
+      }, 'event');
 
       toast({
         title: "Added to Cart",
