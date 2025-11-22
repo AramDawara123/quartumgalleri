@@ -131,14 +131,14 @@ const Home = () => {
           <p className="text-lg sm:text-xl md:text-2xl mb-10 font-light max-w-3xl mx-auto leading-relaxed text-nordic-white/90 text-reveal" style={{ animationDelay: '0.3s' }}>
             Discover extraordinary contemporary art and timeless masterpieces in our curated collection
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center text-reveal" style={{ animationDelay: '0.6s' }}>
-            <Button variant="hero" size="lg" asChild className="w-full sm:w-auto button-float" style={{ animationDelay: '0s' }}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
               <Link to="/artworks" className="inline-flex items-center">
                 Explore Collection
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="elegant" size="lg" asChild className="w-full sm:w-auto button-float" style={{ animationDelay: '0.3s' }}>
+            <Button variant="elegant" size="lg" asChild className="w-full sm:w-auto">
               <Link to="/events" className="inline-flex items-center">
                 View Exhibitions
                 <Calendar className="ml-2 h-5 w-5" />
