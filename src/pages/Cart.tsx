@@ -89,7 +89,7 @@ const Cart = () => {
 
     setAppliedDiscount({
       code: discount.code,
-      type: discount.discount_type,
+      type: discount.discount_type as 'percentage' | 'fixed',
       value: Number(discount.discount_value),
       amount: discountAmount,
     });

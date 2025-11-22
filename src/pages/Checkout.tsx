@@ -75,10 +75,13 @@ const Checkout = () => {
         .from('incoming_orders')
         .insert({
           title: `Order from ${formData.firstName} ${formData.lastName}`,
-          description: `Order Details:\n${orderDetails.map(item => `- ${item.title} (€${item.price} x ${item.quantity})`).join('\n')}\n\nTotal: €${total.toFixed(2)}`,
+          customer_name: `${formData.firstName} ${formData.lastName}`,
+          customer_email: formData.email,
+          customer_phone: formData.phone,
+          shipping_address: `${formData.address}, ${formData.city}, ${formData.postalCode}, ${formData.country}`,
+          total_amount: total,
           notes: customerInfo,
           status: 'pending',
-          expected_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
         });
 
       if (error) throw error;
