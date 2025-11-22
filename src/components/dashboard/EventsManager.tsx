@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { ImageUpload } from './ImageUpload';
 
 interface Event {
   id: string;
@@ -203,10 +204,11 @@ export const EventsManager = () => {
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
               />
 
-              <Input
-                placeholder="Afbeelding URL"
+              <ImageUpload
+                label="Afbeelding"
                 value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                onChange={(url) => setFormData({ ...formData, image_url: url })}
+                bucket="page-content"
               />
 
               <Input
