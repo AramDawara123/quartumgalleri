@@ -14,7 +14,6 @@ interface Artist {
   bio: string | null;
   image_url: string | null;
   website: string | null;
-  email: string | null;
   created_at: string;
 }
 interface Artwork {
@@ -139,9 +138,6 @@ const ArtistProfile = () => {
                 <h1 className="text-4xl md:text-5xl font-serif font-bold mb-3 text-primary">
                   {artist.name}
                 </h1>
-                {artist.email && <p className="text-lg text-accent font-medium mb-2">
-                    {artist.email}
-                  </p>}
               </div>
             </div>
 

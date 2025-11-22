@@ -12,7 +12,6 @@ interface Artist {
   bio: string;
   image_url: string;
   website: string;
-  email: string;
   created_at: string;
 }
 const Artists = () => {
@@ -149,7 +148,6 @@ const Artists = () => {
                     <h3 className="font-serif text-xl font-semibold mb-2 text-primary">
                       {artist.name}
                     </h3>
-                    {artist.email && <p className="text-accent font-medium mb-2">{artist.email}</p>}
                     <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
                       {artist.bio || 'Talented artist creating beautiful works.'}
                     </p>
