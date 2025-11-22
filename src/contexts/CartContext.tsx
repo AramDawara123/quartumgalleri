@@ -4,7 +4,9 @@ import { useToast } from '@/hooks/use-toast';
 
 interface CartItem {
   id: string;
-  artwork_id: string;
+  artwork_id?: string;
+  event_id?: string;
+  item_type: 'artwork' | 'event';
   title: string;
   artist_name: string;
   price: number;
@@ -14,7 +16,7 @@ interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (artworkId: string, artwork: any) => Promise<void>;
+  addToCart: (itemId: string, item: any, type: 'artwork' | 'event') => Promise<void>;
   removeFromCart: (itemId: string) => Promise<void>;
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -53,6 +55,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .select(`
         id,
         artwork_id,
+        event_id,
+        item_type,
         quantity,
         artworks (
           title,
@@ -61,6 +65,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           artists (
             name
           )
+        ),
+        events (
+          title,
+          price,
+          image_url,
+          event_date
         )
       `)
       .eq('session_id', sessionId);
@@ -70,43 +80,75 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
-    const cartItems = data?.map((item: any) => ({
-      id: item.id,
-      artwork_id: item.artwork_id,
-      title: item.artworks.title,
-      artist_name: item.artworks.artists?.name || 'Unknown Artist',
-      price: item.artworks.price,
-      image_url: item.artworks.image_url,
-      quantity: item.quantity,
-    })) || [];
+    const cartItems = data?.map((item: any) => {
+      if (item.item_type === 'event' && item.events) {
+        return {
+          id: item.id,
+          event_id: item.event_id,
+          item_type: 'event' as const,
+          title: item.events.title,
+          artist_name: new Date(item.events.event_date).toLocaleDateString('nl-NL', { 
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          }),
+          price: item.events.price || 0,
+          image_url: item.events.image_url,
+          quantity: item.quantity,
+        };
+      } else if (item.artworks) {
+        return {
+          id: item.id,
+          artwork_id: item.artwork_id,
+          item_type: 'artwork' as const,
+          title: item.artworks.title,
+          artist_name: item.artworks.artists?.name || 'Unknown Artist',
+          price: item.artworks.price,
+          image_url: item.artworks.image_url,
+          quantity: item.quantity,
+        };
+      }
+      return null;
+    }).filter(Boolean) || [];
 
-    setItems(cartItems);
+    setItems(cartItems as CartItem[]);
   };
 
   useEffect(() => {
     loadCartItems();
   }, []);
 
-  const addToCart = async (artworkId: string, artwork: any) => {
+  const addToCart = async (itemId: string, item: any, type: 'artwork' | 'event') => {
     const sessionId = getSessionId();
     
     // Check if item already exists in cart
-    const existingItem = items.find(item => item.artwork_id === artworkId);
+    const existingItem = items.find(cartItem => 
+      type === 'artwork' ? cartItem.artwork_id === itemId : cartItem.event_id === itemId
+    );
     
     if (existingItem) {
       await updateQuantity(existingItem.id, existingItem.quantity + 1);
       return;
     }
 
+    const insertData: any = {
+      session_id: sessionId,
+      item_type: type,
+      quantity: 1,
+    };
+
+    if (type === 'artwork') {
+      insertData.artwork_id = itemId;
+    } else {
+      insertData.event_id = itemId;
+    }
+
     const { error } = await supabase
       .from('cart_items')
-      .insert({
-        session_id: sessionId,
-        artwork_id: artworkId,
-        quantity: 1,
-      });
+      .insert(insertData);
 
     if (error) {
+      console.error('Error adding to cart:', error);
       toast({
         title: "Error",
         description: "Could not add item to cart",
@@ -117,7 +159,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     toast({
       title: "Added to cart",
-      description: `${artwork.title} has been added to your cart`,
+      description: `${item.title} has been added to your cart`,
     });
 
     await loadCartItems();

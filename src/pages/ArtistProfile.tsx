@@ -87,7 +87,7 @@ const ArtistProfile = () => {
 
   const handleAddToCart = async (artwork: Artwork) => {
     try {
-      await addToCart(artwork.id, artwork);
+      await addToCart(artwork.id, artwork, 'artwork');
       
       toast({
         title: "Added to Cart",
