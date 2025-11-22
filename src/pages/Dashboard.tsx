@@ -18,7 +18,7 @@ const Dashboard = () => {
       case 'artworks':
         return (
           <Card className="border-0 shadow-xl card-glow overflow-hidden">
-            <CardHeader className="border-b bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 p-4 sm:p-6 backdrop-blur-sm">
+            <CardHeader className="border-b bg-muted/30 p-4 sm:p-6">
               <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-serif">Alle Kunstwerken Beheren</CardTitle>
               <CardDescription className="text-sm sm:text-base mt-1">
                 Overzicht van alle kunstwerken in de galerie
@@ -32,7 +32,7 @@ const Dashboard = () => {
       case 'artist-artworks':
         return (
           <Card className="border-0 shadow-xl card-glow overflow-hidden">
-            <CardHeader className="border-b bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 p-4 sm:p-6 backdrop-blur-sm">
+            <CardHeader className="border-b bg-muted/30 p-4 sm:p-6">
               <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-serif">Kunstwerken per Kunstenaar</CardTitle>
               <CardDescription className="text-sm sm:text-base mt-1">
                 Beheer kunstwerken van specifieke kunstenaars
@@ -46,7 +46,7 @@ const Dashboard = () => {
       case 'artists':
         return (
           <Card className="border-0 shadow-xl card-glow overflow-hidden">
-            <CardHeader className="border-b bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 p-4 sm:p-6 backdrop-blur-sm">
+            <CardHeader className="border-b bg-muted/30 p-4 sm:p-6">
               <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-serif">Kunstenaars Beheren</CardTitle>
               <CardDescription className="text-sm sm:text-base mt-1">
                 Beheer de kunstenaars in uw galerie
@@ -60,7 +60,7 @@ const Dashboard = () => {
       case 'events':
         return (
           <Card className="border-0 shadow-xl card-glow overflow-hidden">
-            <CardHeader className="border-b bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 p-4 sm:p-6 backdrop-blur-sm">
+            <CardHeader className="border-b bg-muted/30 p-4 sm:p-6">
               <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-serif">Evenementen Beheren</CardTitle>
               <CardDescription className="text-sm sm:text-base mt-1">
                 Organiseer en beheer galerie evenementen
@@ -74,7 +74,7 @@ const Dashboard = () => {
       case 'incoming':
         return (
           <Card className="border-0 shadow-xl card-glow overflow-hidden">
-            <CardHeader className="border-b bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 p-4 sm:p-6 backdrop-blur-sm">
+            <CardHeader className="border-b bg-muted/30 p-4 sm:p-6">
               <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-serif">Inkomende Bestellingen</CardTitle>
               <CardDescription className="text-sm sm:text-base mt-1">
                 Beheer verwachte kunstwerken en leveringen
@@ -88,7 +88,7 @@ const Dashboard = () => {
       case 'discounts':
         return (
           <Card className="border-0 shadow-xl card-glow overflow-hidden">
-            <CardHeader className="border-b bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 p-4 sm:p-6 backdrop-blur-sm">
+            <CardHeader className="border-b bg-muted/30 p-4 sm:p-6">
               <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-serif">Kortingen Beheren</CardTitle>
               <CardDescription className="text-sm sm:text-base mt-1">
                 Maak en beheer kortingscodes voor kunstwerken en evenementen
@@ -102,7 +102,7 @@ const Dashboard = () => {
       case 'page-content':
         return (
           <Card className="border-0 shadow-xl card-glow overflow-hidden">
-            <CardHeader className="border-b bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 p-4 sm:p-6 backdrop-blur-sm">
+            <CardHeader className="border-b bg-muted/30 p-4 sm:p-6">
               <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-serif">About Us Pagina Beheren</CardTitle>
               <CardDescription className="text-sm sm:text-base mt-1">
                 Bewerk de inhoud van de About Us pagina
@@ -120,14 +120,14 @@ const Dashboard = () => {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-gradient-to-br from-background via-muted/20 to-background">
+      <div className="flex min-h-screen w-full bg-background">
         <AppSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
         <SidebarInset className="flex-1">
           <header className="sticky top-0 z-10 flex h-16 sm:h-20 items-center gap-3 sm:gap-4 border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 px-4 sm:px-6 lg:px-8 shadow-sm">
             <SidebarTrigger className="shrink-0" />
             <div className="flex items-center justify-between w-full min-w-0">
               <div className="min-w-0">
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold font-serif bg-gradient-to-r from-primary via-accent/80 to-primary bg-clip-text text-transparent truncate">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold font-serif text-primary truncate">
                   Dashboard
                 </h1>
                 <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
