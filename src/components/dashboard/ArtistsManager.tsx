@@ -15,7 +15,6 @@ interface Artist {
   bio: string;
   image_url: string;
   website: string;
-  email: string;
 }
 
 export const ArtistsManager = () => {
@@ -27,7 +26,6 @@ export const ArtistsManager = () => {
     bio: '',
     image_url: '',
     website: '',
-    email: '',
   });
   const { toast } = useToast();
 
@@ -97,7 +95,7 @@ export const ArtistsManager = () => {
 
     setIsDialogOpen(false);
     setEditingArtist(null);
-    setFormData({ name: '', bio: '', image_url: '', website: '', email: '' });
+    setFormData({ name: '', bio: '', image_url: '', website: '' });
     loadArtists();
   };
 
@@ -108,7 +106,6 @@ export const ArtistsManager = () => {
       bio: artist.bio || '',
       image_url: artist.image_url || '',
       website: artist.website || '',
-      email: artist.email || '',
     });
     setIsDialogOpen(true);
   };
@@ -178,12 +175,6 @@ export const ArtistsManager = () => {
                 value={formData.website}
                 onChange={(e) => setFormData({ ...formData, website: e.target.value })}
               />
-              <Input
-                type="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
               <Button type="submit" className="w-full">
                 {editingArtist ? 'Bijwerken' : 'Toevoegen'}
               </Button>
@@ -196,7 +187,6 @@ export const ArtistsManager = () => {
         <TableHeader>
           <TableRow>
             <TableHead>Naam</TableHead>
-            <TableHead>Email</TableHead>
             <TableHead>Website</TableHead>
             <TableHead className="w-[100px]">Acties</TableHead>
           </TableRow>
@@ -205,7 +195,6 @@ export const ArtistsManager = () => {
           {artists.map((artist) => (
             <TableRow key={artist.id}>
               <TableCell className="font-medium">{artist.name}</TableCell>
-              <TableCell>{artist.email}</TableCell>
               <TableCell>{artist.website}</TableCell>
               <TableCell>
                 <div className="flex gap-2">

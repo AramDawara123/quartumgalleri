@@ -14,11 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      artist_contacts: {
+        Row: {
+          artist_id: string
+          created_at: string
+          email: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          artist_id: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          artist_id?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artist_contacts_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: true
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       artists: {
         Row: {
           bio: string | null
           created_at: string
-          email: string | null
           id: string
           image_url: string | null
           name: string
@@ -28,7 +59,6 @@ export type Database = {
         Insert: {
           bio?: string | null
           created_at?: string
-          email?: string | null
           id?: string
           image_url?: string | null
           name: string
@@ -38,7 +68,6 @@ export type Database = {
         Update: {
           bio?: string | null
           created_at?: string
-          email?: string | null
           id?: string
           image_url?: string | null
           name?: string
